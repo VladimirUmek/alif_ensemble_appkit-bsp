@@ -72,14 +72,14 @@ __USED int32_t  vioValue[VIO_VALUE_NUM];    // Memory for value used in vioGetVa
 #endif
 
 #if !defined CMSIS_VIN
-#define JOY_UP_PIN              GPIO_PIN(BOARD_JOY_SW_A_GPIO_PORT, BOARD_JOY_SW_A_GPIO_PIN)
-#define JOY_DOWN_PIN            GPIO_PIN(BOARD_JOY_SW_B_GPIO_PORT, BOARD_JOY_SW_B_GPIO_PIN)
-#define JOY_LEFT_PIN            GPIO_PIN(BOARD_JOY_SW_C_GPIO_PORT, BOARD_JOY_SW_C_GPIO_PIN)
-#define JOY_RIGHT_PIN           GPIO_PIN(BOARD_JOY_SW_D_GPIO_PORT, BOARD_JOY_SW_D_GPIO_PIN)
-#define JOY_SELECT_PIN          GPIO_PIN(BOARD_JOY_SW_CENTER_GPIO_PORT, BOARD_JOY_SW_CENTER_GPIO_PIN)
+#define JOY_UP_PIN              GPIO_PIN(BOARD_JOY_SW_A_GPIO_PORT, BOARD_JOY_SW_A_GPIO_PIN) /* RIGHT + 45 DEG */
+#define JOY_DOWN_PIN            GPIO_PIN(BOARD_JOY_SW_B_GPIO_PORT, BOARD_JOY_SW_B_GPIO_PIN) /* RIGHT - 45 DEG */
+#define JOY_LEFT_PIN            GPIO_PIN(BOARD_JOY_SW_C_GPIO_PORT, BOARD_JOY_SW_C_GPIO_PIN) /* LEFT  + 45 DEG */
+#define JOY_RIGHT_PIN           GPIO_PIN(BOARD_JOY_SW_D_GPIO_PORT, BOARD_JOY_SW_D_GPIO_PIN) /* LEFT  - 45 DEG */
+#define JOY_SELECT_PIN          GPIO_PIN(BOARD_JOY_SW_CENTER_GPIO_PORT, BOARD_JOY_SW_CENTER_GPIO_PIN) /* SELECT/CENTER */
 
-#define BUTTON_0_PIN            GPIO_PIN(BOARD_JOY_SW_A_GPIO_PORT, BOARD_JOY_SW_A_GPIO_PIN)
-#define BUTTON_1_PIN            GPIO_PIN(BOARD_JOY_SW_B_GPIO_PORT, BOARD_JOY_SW_B_GPIO_PIN)
+#define BUTTON_0_PIN            GPIO_PIN(BOARD_JOY_SW_B_GPIO_PORT, BOARD_JOY_SW_B_GPIO_PIN) /* Does not work yet - reason unknown */
+#define BUTTON_1_PIN            GPIO_PIN(BOARD_JOY_SW_CENTER_GPIO_PORT, BOARD_JOY_SW_CENTER_GPIO_PIN)
 #endif
 
 // Initialize test input, output.
@@ -107,12 +107,13 @@ void vioInit (void) {
 #endif
 
 #if !defined CMSIS_VIN
+  #if 0 /* Reconfiguring pin causes issue - disable setup until it gets investigated */
   gpio->Setup(JOY_UP_PIN, NULL);
   gpio->Setup(JOY_DOWN_PIN, NULL);
   gpio->Setup(JOY_LEFT_PIN, NULL);
   gpio->Setup(JOY_RIGHT_PIN, NULL);
   gpio->Setup(JOY_SELECT_PIN, NULL);
-
+  #endif
   gpio->SetDirection(JOY_UP_PIN, ARM_GPIO_INPUT);
   gpio->SetDirection(JOY_DOWN_PIN, ARM_GPIO_INPUT);
   gpio->SetDirection(JOY_LEFT_PIN, ARM_GPIO_INPUT);
