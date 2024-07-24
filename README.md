@@ -1,4 +1,4 @@
-# Alif Ensemble DevKit Board Layer with Examples
+# Alif Ensemble AppKit Board Layer with Examples
 
 This is the development repository for the Ensemble AppKit-E7 Board Support Pack (BSP).
 
@@ -16,7 +16,7 @@ Directory                   | Description
 
 This BSP requires the [Device Family Pack (DFP) for the Ensemble series](https://github.com/VladimirUmek/alif_ensemble-cmsis-dfp/tree/dev).
 
-- [examples/Blinky](https://github.com/VladimirUmek/alif_ensemble_appkit-bsp/tree/main/examples/Blinky) shows the usage in a [*csolution project*](https://github.com/VladimirUmek/alif_ensemble_devkit-bsp/blob/main/examples/Blinky/Blinky.csolution.yml).
+- [examples/Blinky](https://github.com/VladimirUmek/alif_ensemble_appkit-bsp/tree/main/examples/Blinky) shows the usage in a [*csolution project*](https://github.com/VladimirUmek/alif_ensemble_appkit-bsp/blob/main/examples/Blinky/Blinky.csolution.yml).
   
 - [Board Layers](https://github.com/VladimirUmek/alif_ensemble_appkit-bsp/tree/main/layers/) are designed for [Reference Applications](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md) and allow to run various device-agnostic examples on this board.
 
