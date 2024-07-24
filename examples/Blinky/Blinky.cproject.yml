@@ -1,0 +1,48 @@
+# A project translates into one executable or library.
+project:
+
+  processor:
+    trustzone: off
+
+  # List components to use for your application.
+  # A software component is a re-usable unit that may be configurable.
+  components:
+    - component: Device:Conductor Tool support
+    - component: Device:Startup&C Startup
+
+    - component: Device:Retarget IO:STDOUT
+
+    - component: Device:SOC Peripherals:PINCONF
+    - component: Device:SOC Peripherals:USART
+
+    - component: CMSIS:CORE
+
+    - component: CMSIS:OS Tick:SysTick
+    - component: CMSIS:RTOS2:Keil RTX5&Source
+
+    - component: CMSIS Driver:GPIO
+    - component: CMSIS Driver:USART:Custom
+    - component: CMSIS Driver:VIO:Board&AppKit-E7
+
+    - component: CMSIS-Compiler:I/O:STDOUT&User
+
+  add-path:
+    - ./ConductorTool
+
+  # List of source groups and files added to a project or a layer.
+  groups:
+    - group: Documentation
+      files:
+        - file: README.md
+    - group: Source Files
+      files:
+        - file: Blinky.c
+    - group: Board
+      files:
+        - file: main.c
+        - file: retarget_stdio.c
+
+  output:
+    type:
+      - elf
+      - bin
