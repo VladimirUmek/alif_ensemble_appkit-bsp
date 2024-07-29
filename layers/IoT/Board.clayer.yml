@@ -38,7 +38,11 @@ layer:
         - '--diag_suppress 6312,6314,6329,6848'
 
   components:
+    - component: AlifSemiconductor::BSP:External peripherals:CAMERA Sensor ARX3A0
+    - component: AlifSemiconductor::BSP:External peripherals:ILI9806E LCD panel
+
     - component: AlifSemiconductor::CMSIS Driver:GPIO
+    - component: AlifSemiconductor::CMSIS Driver:I2C
     - component: AlifSemiconductor::CMSIS Driver:USART
 
     - component: AlifSemiconductor::Device:Conductor Tool support
@@ -48,11 +52,20 @@ layer:
     - component: AlifSemiconductor::Device:Retarget IO:STDIN
     - component: AlifSemiconductor::Device:Retarget IO:STDOUT
 
+    - component: AlifSemiconductor::Device:SOC Peripherals:CDC
+    - component: AlifSemiconductor::Device:SOC Peripherals:CPI
+    - component: AlifSemiconductor::Device:SOC Peripherals:GPIO
+    - component: AlifSemiconductor::Device:SOC Peripherals:MIPI CSI2
+    - component: AlifSemiconductor::Device:SOC Peripherals:MIPI DSI
     - component: AlifSemiconductor::Device:SOC Peripherals:PINCONF
 
     - component: ARM::CMSIS:CORE
 
+    # VIO clashes with Alif GPIO driver hence using defines below
     - component: CMSIS Driver:VIO:Board&AppKit-E7
+      define:
+        - CMSIS_VIN: 1
+        - CMSIS_VOUT: 1
 
     - component: ARM::CMSIS-Compiler:CORE
     - component: ARM::CMSIS-Compiler:STDERR:Custom
