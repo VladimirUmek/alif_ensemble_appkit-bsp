@@ -41,12 +41,14 @@ layer:
     - component: AlifSemiconductor::BSP:External peripherals:CAMERA Sensor ARX3A0
     - component: AlifSemiconductor::BSP:External peripherals:ILI9806E LCD panel
 
-    - component: AlifSemiconductor::CMSIS Driver:GPIO
+    # - component: AlifSemiconductor::CMSIS Driver:GPIO
     - component: AlifSemiconductor::CMSIS Driver:I2C
     - component: AlifSemiconductor::CMSIS Driver:USART
 
     - component: AlifSemiconductor::Device:Conductor Tool support
     - component: AlifSemiconductor::Device:Startup&C Startup
+    - component: AlifSemiconductor::Device:SE runtime Services:core
+    - component: AlifSemiconductor::Device:SE runtime Services:Initialization Helper
 
     - component: AlifSemiconductor::Device:Retarget IO:STDERR
     - component: AlifSemiconductor::Device:Retarget IO:STDIN
@@ -55,6 +57,7 @@ layer:
     - component: AlifSemiconductor::Device:SOC Peripherals:CDC
     - component: AlifSemiconductor::Device:SOC Peripherals:CPI
     - component: AlifSemiconductor::Device:SOC Peripherals:GPIO
+    - component: AlifSemiconductor::Device:SOC Peripherals:MHU
     - component: AlifSemiconductor::Device:SOC Peripherals:MIPI CSI2
     - component: AlifSemiconductor::Device:SOC Peripherals:MIPI DSI
     - component: AlifSemiconductor::Device:SOC Peripherals:PINCONF
