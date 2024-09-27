@@ -4,6 +4,9 @@ project:
   processor:
     trustzone: off
 
+  define:
+    - CMSIS_target_header: \"AppKit-E7.h\"
+
   # List components to use for your application.
   # A software component is a re-usable unit that may be configurable.
   components:
@@ -13,7 +16,6 @@ project:
     - component: Device:Retarget IO:STDOUT
 
     - component: Device:SOC Peripherals:PINCONF
-    - component: Device:SOC Peripherals:USART
 
     - component: CMSIS:CORE
 
@@ -21,10 +23,11 @@ project:
     - component: CMSIS:RTOS2:Keil RTX5&Source
 
     - component: CMSIS Driver:GPIO
-    - component: CMSIS Driver:USART:Custom
+    - component: CMSIS Driver:USART
     - component: CMSIS Driver:VIO:Board&AppKit-E7
 
-    - component: CMSIS-Compiler:I/O:STDOUT&User
+    - component: CMSIS-Compiler:CORE
+    - component: CMSIS-Compiler:STDOUT:Custom
 
   add-path:
     - ./ConductorTool
