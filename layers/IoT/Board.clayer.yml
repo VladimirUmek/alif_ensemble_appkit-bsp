@@ -47,6 +47,7 @@ layer:
 
     - component: AlifSemiconductor::Device:Conductor Tool support
     - component: AlifSemiconductor::Device:Startup&C Startup
+
     - component: AlifSemiconductor::Device:SE runtime Services:core
     - component: AlifSemiconductor::Device:SE runtime Services:Initialization Helper
 
@@ -74,6 +75,8 @@ layer:
     - component: ARM::CMSIS-Compiler:STDERR:Custom
     - component: ARM::CMSIS-Compiler:STDIN:Custom
     - component: ARM::CMSIS-Compiler:STDOUT:Custom
+
+    - component: Arm::Machine Learning:NPU Support:Ethos-U Driver&Generic U55
 
   groups:
     - group: Board
