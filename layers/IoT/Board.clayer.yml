@@ -11,6 +11,7 @@ layer:
       provides:
         - CMSIS_USART
         - CMSIS_VIO
+        - VSI_VIDEO
         - STDIN
         - STDOUT
         - STDERR
