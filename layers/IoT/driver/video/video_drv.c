@@ -18,6 +18,9 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
+#include "bayer.h"
+#include "image_processing.h"
 #include "video_drv.h"
 #include "RTE_Components.h"
 #include CMSIS_device_header
@@ -83,6 +86,14 @@
 #define DISPLAY_FRAME_RATE   60
 #endif
 
+// Internal Video Driver frame buffers
+static uint8_t videoI0_raw [CAMERA_FRAME_WIDTH * CAMERA_FRAME_HEIGHT] 
+                            __attribute__((aligned(32), section(".bss.camera_frame_buf")));     //RAW8
+static uint8_t videoI0_buff[CAMERA_FRAME_WIDTH * CAMERA_FRAME_HEIGHT * RGB_BYTES]
+                            __attribute__((aligned(32), section(".bss.camera_frame_bayer_to_rgb_buf"))); //RGB888
+static uint8_t videoO0_buff [DISPLAY_FRAME_WIDTH][DISPLAY_FRAME_HEIGHT][RGB_BYTES]
+                            __attribute__((aligned(32), section(".bss.lcd_frame_buf"))) = {0U}; //RGB888
+
 // Camera Driver instance
 extern ARM_DRIVER_CPI Driver_CPI;
 static ARM_DRIVER_CPI *VideoI0 = &Driver_CPI;
@@ -97,12 +108,16 @@ static uint8_t Initialized = 0U;
 // Video Driver Configuration Parameters
 static struct _video_config {
   void    *buf;
+  void    *frame;
   uint32_t frame_width;
   uint32_t frame_height;
-  uint8_t  pixel_size;
+  uint32_t  block_size;
+  uint32_t  block_num;
+  uint32_t  block_idx;
+  uint32_t  block_cnt;
   uint8_t  configured;
   uint8_t  active;
-  uint16_t status;
+  uint8_t  status;
 } video_config[2];
 
 // Event Callback
@@ -117,6 +132,24 @@ static void VideoI0_Event(uint32_t camera_event) {
     event |= VIDEO_DRV_EVENT_FRAME;
     video_config[0].active = 0U;
     video_config[0].status &= ~Reg_STATUS_BUF_EMPTY_Msk;
+
+    if ((video_config[0].status & Reg_STATUS_BUF_FULL_Msk) != 0U) {
+      // TODO buffer full event
+      event |= VIDEO_DRV_EVENT_OVERFLOW;
+    }
+    dc1394_bayer_Simple(videoI0_raw, 
+                        videoI0_buff, 
+                        CAMERA_FRAME_WIDTH, 
+                        CAMERA_FRAME_HEIGHT, 
+                        DC1394_COLOR_FILTER_GRBG);
+    resize_image(videoI0_buff,
+                 CAMERA_FRAME_WIDTH,
+                 CAMERA_FRAME_HEIGHT,
+                 (uint8_t *)video_config[0].frame,
+                 video_config[0].frame_width,
+                 video_config[0].frame_height,
+                 RGB_BYTES,
+                 1U);
   }
 
   if (camera_event & ARM_CPI_EVENT_ERR_CAMERA_INPUT_FIFO_OVERRUN |
@@ -126,7 +159,7 @@ static void VideoI0_Event(uint32_t camera_event) {
   }
 
   if (CB_Event != NULL) {
-    CB_Event(0U, event);
+    CB_Event(0, event);
   }
 }
 
@@ -140,7 +173,7 @@ static void VideoO0_Event(uint32_t display_event) {
   }
 
   if (CB_Event != NULL) {
-    CB_Event(1U, event);
+    CB_Event(1, event);
   }
 }
 
@@ -162,6 +195,7 @@ int32_t VideoDrv_Initialize (VideoDrv_Event_t cb_event) {
   #if (VIDEO_OUTPUT_CHANNELS == 1)
     VideoO0->Initialize(VideoO0_Event);
     VideoO0->PowerControl(ARM_POWER_FULL);
+    VideoO0->Control(CDC200_CONFIGURE_DISPLAY, (uint32_t)videoO0_buff);
     video_config[1].configured = 0U;
   #endif
 
@@ -197,7 +231,7 @@ int32_t VideoDrv_SetFile (uint32_t channel, const char *name) {
 
 // Configure Video Interface
 int32_t VideoDrv_Configure (uint32_t channel, uint32_t frame_width, uint32_t frame_height, uint32_t color_format, uint32_t frame_rate) {
-  uint32_t pixel_size;
+  uint32_t pixel_size, block_size;
 
   if ((((channel & 1U) == 0U) && ((channel >> 1) >= VIDEO_INPUT_CHANNELS))  ||
       (((channel & 1U) != 0U) && ((channel >> 1) >= VIDEO_OUTPUT_CHANNELS)) ||
@@ -210,17 +244,17 @@ int32_t VideoDrv_Configure (uint32_t channel, uint32_t frame_width, uint32_t fra
   }
 
   if (channel == VIDEO_DRV_IN0) {
-    if((frame_width  != CAMERA_FRAME_WIDTH)  ||
-       (frame_height != CAMERA_FRAME_HEIGHT) ||
-       (frame_rate   != CAMERA_FRAME_RATE)) {
+    if((frame_width  > CAMERA_FRAME_WIDTH)  ||
+       (frame_height > CAMERA_FRAME_HEIGHT) ||
+       (frame_rate  != CAMERA_FRAME_RATE)) {
       return VIDEO_DRV_ERROR_PARAMETER;
     }
   }
 
   if (channel == VIDEO_DRV_OUT0) {
-    if((frame_width  != DISPLAY_FRAME_WIDTH)  ||
-       (frame_height != DISPLAY_FRAME_HEIGHT) ||
-       (frame_rate   != DISPLAY_FRAME_RATE)) {
+    if((frame_width  > DISPLAY_FRAME_WIDTH)  ||
+       (frame_height > DISPLAY_FRAME_HEIGHT) ||
+       (frame_rate  != DISPLAY_FRAME_RATE)) {
       return VIDEO_DRV_ERROR_PARAMETER;
     }
   }
@@ -229,10 +263,8 @@ int32_t VideoDrv_Configure (uint32_t channel, uint32_t frame_width, uint32_t fra
     case VIDEO_DRV_COLOR_RGB888:
       pixel_size = 24U;
       break;
-    case VIDEO_DRV_COLOR_BGR565:
-      pixel_size = 16U;
-      break;
     // Unsupported
+    case VIDEO_DRV_COLOR_BGR565:
     case VIDEO_DRV_COLOR_GRAYSCALE8:
     case VIDEO_DRV_COLOR_YUV420:
     case VIDEO_DRV_COLOR_NV12:
@@ -249,9 +281,11 @@ int32_t VideoDrv_Configure (uint32_t channel, uint32_t frame_width, uint32_t fra
     return VIDEO_DRV_ERROR;
   }
 
+  block_size = (((frame_width * frame_height) * pixel_size) + 7U) / 8U;
+
   video_config[channel].frame_width  = frame_width;
   video_config[channel].frame_height = frame_height;
-  video_config[channel].pixel_size   = pixel_size;
+  video_config[channel].block_size   = block_size;
   video_config[channel].configured   = 1U;
 
   return VIDEO_DRV_OK;
@@ -259,7 +293,7 @@ int32_t VideoDrv_Configure (uint32_t channel, uint32_t frame_width, uint32_t fra
 
 // Set Video Interface buffer
 int32_t VideoDrv_SetBuf (uint32_t channel, void *buf, uint32_t buf_size) {
-  uint32_t block_size, block_num;
+  uint32_t block_num;
 
   if ((((channel & 1U) == 0U) && ((channel >> 1) >= VIDEO_INPUT_CHANNELS))  ||
       (((channel & 1U) != 0U) && ((channel >> 1) >= VIDEO_OUTPUT_CHANNELS)) ||
@@ -277,19 +311,15 @@ int32_t VideoDrv_SetBuf (uint32_t channel, void *buf, uint32_t buf_size) {
     return VIDEO_DRV_ERROR;
   }
 
-  block_size = (((video_config[channel].frame_width * video_config[channel].frame_height) *
-                  video_config[channel].pixel_size) + 7U) / 8U;
-  block_num = buf_size / block_size;
+
+  block_num = buf_size / video_config[channel].block_size;
 
   if (block_num == 0U) {
     return VIDEO_DRV_ERROR;
   }
 
-  if (channel & VIDEO_DRV_OUT0) {
-    VideoO0->Control(CDC200_CONFIGURE_DISPLAY, (uint32_t)buf);
-  }
-
   video_config[channel].buf = buf;
+  video_config[channel].block_num  = block_num;
   video_config[channel].configured = 2U;
 
   return VIDEO_DRV_OK;
@@ -311,6 +341,8 @@ int32_t VideoDrv_FlushBuf (uint32_t channel) {
     return VIDEO_DRV_ERROR;
   }
 
+  video_config[channel].block_idx = 0U;
+  video_config[channel].block_cnt = 0U;
   video_config[channel].status |=  Reg_STATUS_BUF_EMPTY_Msk;
   video_config[channel].status &= ~Reg_STATUS_BUF_FULL_Msk;
 
@@ -333,28 +365,32 @@ int32_t VideoDrv_StreamStart (uint32_t channel, uint32_t mode) {
   }
 
   if (video_config[channel].active != 0U) {
+    // TODO check for mode change
     return VIDEO_DRV_OK;
   }
 
   if (channel == VIDEO_DRV_IN0) {
     if (mode == VIDEO_DRV_MODE_SINGLE) {
-      ret = VideoI0->CaptureFrame(video_config[channel].buf);
+      ret = VideoI0->CaptureFrame(videoI0_raw);
       if (ret != ARM_DRIVER_OK) {
         return VIDEO_DRV_ERROR;
       }
     } else {
-      return VIDEO_DRV_ERROR;
+      ret = VideoI0->CaptureVideo(videoI0_raw);
+      if (ret != ARM_DRIVER_OK) {
+        return VIDEO_DRV_ERROR;
+      }
     }
   }
 
   if (channel == VIDEO_DRV_OUT0) {
     if (mode == VIDEO_DRV_MODE_SINGLE) {
-      return VIDEO_DRV_ERROR;
+      ret = VideoO0->Start();
     } else {
       ret = VideoO0->Start();
-      if (ret != ARM_DRIVER_OK) {
-        return VIDEO_DRV_ERROR;
-      }
+    }
+    if (ret != ARM_DRIVER_OK) {
+      return VIDEO_DRV_ERROR;
     }
   }
 
@@ -415,7 +451,8 @@ void *VideoDrv_GetFrameBuf (uint32_t channel) {
     }
   }
 
-  frame = video_config[channel].buf;
+  frame = video_config[channel].buf + (video_config[channel].block_idx * video_config[channel].block_size);
+  video_config[channel].frame = frame;
 
   return frame;
 }
@@ -437,12 +474,35 @@ int32_t VideoDrv_ReleaseFrame (uint32_t channel) {
     if ((video_config[channel].status & Reg_STATUS_BUF_EMPTY_Msk) != 0U) {
       return VIDEO_DRV_ERROR;
     }
+    if (video_config[channel].block_cnt > 0U) {
+      video_config[channel].block_cnt--;
+    }
+    if (video_config[channel].block_cnt == 0U) {
+      video_config[channel].status |= Reg_STATUS_BUF_EMPTY_Msk;
+    }
+    video_config[channel].status &= ~Reg_STATUS_BUF_FULL_Msk;
   }
 
   if (channel == VIDEO_DRV_OUT0) {
     if ((video_config[channel].status & Reg_STATUS_BUF_FULL_Msk) != 0U) {
       return VIDEO_DRV_ERROR;
     }
+    // TODO copy frame
+    for (uint32_t i = video_config[channel].frame_height; i > 0; --i) {
+      memcpy((uint8_t*)videoO0_buff + (i * DISPLAY_FRAME_WIDTH*RGB_BYTES), (uint8_t*)video_config[channel].frame + (i * video_config[channel].frame_width*RGB_BYTES), video_config[channel].frame_width*RGB_BYTES);
+    }
+    if (video_config[channel].block_cnt < video_config[channel].block_num) {
+      video_config[channel].block_cnt++;
+    }
+    // if (video_config[channel].block_cnt == video_config[channel].block_num) {
+    //   video_config[channel].status |= Reg_STATUS_BUF_FULL_Msk;
+    // }
+    video_config[channel].status &= ~Reg_STATUS_BUF_EMPTY_Msk;
+  }
+
+  video_config[channel].block_idx++;
+  if (video_config[channel].block_idx == video_config[channel].block_num) {
+    video_config[channel].block_idx = 0U;
   }
 
   return VIDEO_DRV_OK;

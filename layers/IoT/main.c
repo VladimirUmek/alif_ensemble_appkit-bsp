@@ -38,7 +38,8 @@ __WEAK int32_t shield_setup (void) {
 #endif
 
 static struct ethosu_driver npuDriver;
-void NPU_HE_IRQHandler(void) {
+
+static void npu_irq_handler(void) {
   ethosu_irq_handler(&npuDriver);
 }
 
@@ -55,6 +56,7 @@ int NpuInit() {
     return 1;
   }
 
+  NVIC_SetVector(LOCAL_NPU_IRQ_IRQn, (uint32_t) &npu_irq_handler);
   NVIC_EnableIRQ(LOCAL_NPU_IRQ_IRQn);
 
   return 0;
@@ -74,6 +76,14 @@ void clock_init(void) {
     // printf("SE: HFOSC enable error_code=%u se_error_code=%u\n", error_code, service_error_code);
     return;
   }
+}
+
+static void CpuCacheEnable(void) {
+  /* Enable I-Cache */
+  SCB_EnableICache();
+
+  /* Enable D-Cache */
+  SCB_EnableDCache();
 }
 
 int main (void) {
@@ -98,6 +108,9 @@ int main (void) {
 #ifdef CMSIS_shield_header
   shield_setup();
 #endif
+
+  /* Enable the CPU Cache */
+  CpuCacheEnable();
 
   return (app_main());
 }

@@ -19,6 +19,7 @@ layer:
 
   define:
     - CMSIS_target_header: \"AppKit-E7.h\"
+    - ETHOSU55
 
   packs:
     - pack: AlifSemiconductor::Ensemble
@@ -78,6 +79,7 @@ layer:
     - component: ARM::CMSIS-Compiler:STDOUT:Custom
 
     - component: Arm::Machine Learning:NPU Support:Ethos-U Driver&Generic U55
+    - component: tensorflow::Machine Learning:TensorFlow:Kernel&Ethos-U
 
   groups:
     - group: Board
@@ -94,6 +96,13 @@ layer:
         - file: ./driver/sensor/sensor_config.h
         - file: ./driver/sensor/sensor_drv_hw.c
         - file: ./driver/video/video_drv.c
+
+    - group: Video Processing
+      files:
+        - file: ./driver/video/bayer.h
+        - file: ./driver/video/bayer2rgb.c
+        - file: ./driver/video/image_processing.h
+        - file: ./driver/video/image_processing.c
 
   linker:
     - script: RTE/Device/AE722F80F55D5LS_M55_HP/M55_HP.sct
