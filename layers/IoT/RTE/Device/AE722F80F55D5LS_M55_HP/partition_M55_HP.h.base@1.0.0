@@ -26,8 +26,8 @@
  * limitations under the License.
  */
 
-#ifndef PARTITION_M55_HE_H
-#define PARTITION_M55_HE_H
+#ifndef PARTITION_M55_HP_H
+#define PARTITION_M55_HP_H
 
 /*
 //-------- <<< Use Configuration Wizard in Context Menu >>> -----------------
@@ -1262,4 +1262,4 @@ __STATIC_INLINE void TZ_SAU_Setup (void)
 
 }
 
-#endif  /* PARTITION_M55_HE_H */
+#endif  /* PARTITION_M55_HP_H */
