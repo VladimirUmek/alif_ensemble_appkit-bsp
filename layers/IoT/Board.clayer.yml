@@ -20,6 +20,7 @@ layer:
   define:
     - CMSIS_target_header: \"AppKit-E7.h\"
     - ETHOSU55
+    - COPY_VECTORS
 
   packs:
     - pack: AlifSemiconductor::Ensemble

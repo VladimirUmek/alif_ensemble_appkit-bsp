@@ -78,6 +78,22 @@ void clock_init(void) {
   }
 }
 
+#ifdef COPY_VECTORS
+#include <string.h> // memcpy
+static VECTOR_TABLE_Type MyVectorTable[496] __attribute__((aligned (2048))) __attribute__((section (".bss.noinit.ram_vectors")));
+static void copy_vtor_table_to_ram()
+{
+  if (SCB->VTOR == (uint32_t) MyVectorTable) {
+    return;
+  }
+  memcpy(MyVectorTable, (const void *) SCB->VTOR, sizeof MyVectorTable);
+  __DMB();
+  // Set the new vector table into use.
+  SCB->VTOR = (uint32_t) MyVectorTable;
+  __DSB();
+}
+#endif
+
 static void CpuCacheEnable(void) {
   /* Enable I-Cache */
   SCB_EnableICache();
@@ -87,6 +103,9 @@ static void CpuCacheEnable(void) {
 }
 
 int main (void) {
+#ifdef COPY_VECTORS
+  copy_vtor_table_to_ram();
+#endif
   /* Apply pin configuration */
   conductor_pins_config();
 
