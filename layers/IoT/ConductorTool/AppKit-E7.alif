@@ -15129,7 +15129,7 @@
             "pins": {
                 "interfaces": {
                     "configurables": {
-                        "moduleSelected": "CPI",
+                        "moduleSelected": "LPCPI",
                         "flexIOVolts1V8": true
                     },
                     "modules": [
@@ -27100,7 +27100,7 @@
                         {
                             "id": "LPGPIO",
                             "configurables": {
-                                "instanceSelected": "LPGPIO"
+                                "instanceSelected": null
                             },
                             "instances": [
                                 {
@@ -76594,12 +76594,8 @@
             "trees": {
                 "resourcesTree0000": {
                     "configurables": {
-                        "openNodeIds": [
-                            "Multimedia and Graphics"
-                        ],
-                        "selectedNodeIds": [
-                            "CPI"
-                        ]
+                        "openNodeIds": [],
+                        "selectedNodeIds": []
                     }
                 },
                 "resourcesTree0001": {
@@ -76617,19 +76613,10 @@
                 "pinsTree0000": {
                     "configurables": {
                         "openNodeIds": [
-                            "Low Power Peripherals",
-                            "Multimedia and Graphics",
-                            "Analog Peripherals",
-                            "Communication Peripherals",
-                            "Timers and Counters",
-                            "External Memory Interfaces",
-                            "Wireless Interfaces",
-                            "AON Peripherals",
-                            "GPIO Modules",
-                            "System"
+                            "Low Power Peripherals"
                         ],
                         "selectedNodeIds": [
-                            "CPI"
+                            "LPCPI"
                         ]
                     }
                 },
