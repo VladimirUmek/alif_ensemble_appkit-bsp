@@ -51,8 +51,8 @@ layer:
     - component: AlifSemiconductor::Device:Conductor Tool support
     - component: AlifSemiconductor::Device:Startup&C Startup
 
-    - component: AlifSemiconductor::Device:SE runtime Services:core
-    - component: AlifSemiconductor::Device:SE runtime Services:Initialization Helper
+    - component: AlifSemiconductor::Device:SE runtime Services:core&Source
+    - component: AlifSemiconductor::Device:SE runtime Services:Initialization Helper&Source
 
     - component: AlifSemiconductor::Device:Retarget IO:STDERR
     - component: AlifSemiconductor::Device:Retarget IO:STDIN
@@ -64,6 +64,7 @@ layer:
     - component: AlifSemiconductor::Device:SOC Peripherals:MHU
     - component: AlifSemiconductor::Device:SOC Peripherals:MIPI CSI2
     - component: AlifSemiconductor::Device:SOC Peripherals:MIPI DSI
+    - component: AlifSemiconductor::Device:SOC Peripherals:MIPI DSI CSI2 DPHY
     - component: AlifSemiconductor::Device:SOC Peripherals:PINCONF
 
     - component: ARM::CMSIS:CORE
