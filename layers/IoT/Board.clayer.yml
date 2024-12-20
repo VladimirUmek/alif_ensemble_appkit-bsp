@@ -9,9 +9,9 @@ layer:
   connections:
     - connect: AppKit-E7 Board
       provides:
+        - AVH_VIDEO
         - CMSIS_USART
         - CMSIS_VIO
-        - VSI_VIDEO
         - STDIN
         - STDOUT
         - STDERR
