@@ -11,9 +11,9 @@ Directory                                      | Description
 [build/config](./build/config) | JSON configuration files.
 [build/images](./build/images) | Binaries containing application stubs.
 
-One can copy `build` directory into SETOOLS installation root. From the command window execute:
+One can copy `build` directory into SETOOLS installation root.
 
-To develop application using M55_HE one must generate and download debug stubs by execution from the command window:
+To develop application using M55_HE one must generate and download debug stubs by executing the following commands from the command window:
 
     app-gen-toc -f .\build\config\mram_he.json
     app-write-mram -p
