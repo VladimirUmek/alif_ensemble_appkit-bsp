@@ -99,8 +99,8 @@
   </csolution>
 
   <examples>
-    <example name="Blinky" folder="examples/Blinky" doc="README.md">
-      <description>CMSIS-RTOS2 Blinky example with VIO</description>
+    <example name="Blinky" folder="examples/M55_HE/Blinky" doc="README.md">
+      <description>CMSIS-RTOS2 Blinky example with VIO for M55 HE</description>
       <board name="AppKit-E7" vendor="Alif Semiconductor"/>
       <project>
         <environment name="csolution" load="Blinky.csolution.yml"/>
