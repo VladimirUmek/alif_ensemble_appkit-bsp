@@ -95,7 +95,7 @@
   </components>
 
   <csolution>
-    <clayer type="Board" path="layers/IoT" file="Board.clayer.yml" copy-to="Board/AppKit-E7" condition="AppKit-E7"/>
+    <clayer type="Board" path="layers/M55_HP" file="Board.clayer.yml" copy-to="Board/AppKit-E7" condition="AppKit-E7"/>
   </csolution>
 
   <examples>

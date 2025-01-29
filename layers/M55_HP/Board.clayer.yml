@@ -1,6 +1,6 @@
 layer:
   type: Board
-  description: Board setup for AI/ML
+  description: AppKit-E7 board setup using M55_HP
   for-board: Alif Semiconductor::AppKit-E7
   for-device: Alif Semiconductor::AE722F80F55D5LS:M55_HP
   processor:
