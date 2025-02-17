@@ -20,7 +20,14 @@ layer:
   define:
     - CMSIS_target_header: \"AppKit-E7.h\"
     - ETHOSU55
-    - COPY_VECTORS
+    - NPU_QCONFIG: 1
+    - NPU_REGIONCFG_0: 1
+    - NPU_REGIONCFG_1: 0
+    - NPU_REGIONCFG_2: 1
+    - AXI_LIMIT0_MEM_TYPE: 3
+    - AXI_LIMIT1_MEM_TYPE: 3
+    - AXI_LIMIT2_MEM_TYPE: 3
+    - AXI_LIMIT3_MEM_TYPE: 3
 
   packs:
     - pack: AlifSemiconductor::Ensemble@^2.0.0-0
@@ -92,6 +99,11 @@ layer:
         - file: ./main.h
         - file: ./AppKit-E7.h
         - file: ./retarget_stdio.c
+
+    - group: Ethos Interface
+      files:
+        - file: ./ethosu_cb_dcache.c
+        - file: ./ethosu_cb_os_rtos2.c
 
     - group: Driver
       files:

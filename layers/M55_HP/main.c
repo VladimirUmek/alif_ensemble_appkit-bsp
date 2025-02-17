@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2024 Arm Limited (or its affiliates). All rights reserved.
+ * Copyright (c) 2024-2025 Arm Limited (or its affiliates). All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -37,26 +37,27 @@ __WEAK int32_t shield_setup (void) {
 }
 #endif
 
-static struct ethosu_driver npuDriver;
+static struct ethosu_driver EthosDriver;
 
-static void npu_irq_handler(void) {
-  ethosu_irq_handler(&npuDriver);
+void NPU_HP_IRQHandler(void) {
+  ethosu_irq_handler(&EthosDriver);
 }
 
-int NpuInit() {
-  void * const npuBaseAddr = (void *) LOCAL_NPU_BASE;
+int32_t NpuInit(void) {
+  void *const ethos_base_addr = (void *)LOCAL_NPU_BASE;
 
   /*  Initialize Ethos-U NPU driver. */
-  if (ethosu_init(&npuDriver, /* Arm Ethos-U device driver pointer  */
-                  npuBaseAddr, /* Base address for the Arm Ethos-U device */
-                  0, /* Cache memory pointer (not applicable for U55) */
-                  0, /* Cache memory size */
-                  1, /* Secure */
-                  1) /* Privileged */ ) {
+  if (ethosu_init(&EthosDriver,    /* Ethos-U device driver */
+                  ethos_base_addr, /* Ethos-U base address  */
+                  0,               /* Cache memory pointer  */
+                  0,               /* Cache memory size     */
+                  1,               /* Secure enable         */
+                  1)               /* Privileged mode       */
+      ) {
+    /* Failed to initialize Arm Ethos-U driver */
     return 1;
   }
 
-  NVIC_SetVector(LOCAL_NPU_IRQ_IRQn, (uint32_t) &npu_irq_handler);
   NVIC_EnableIRQ(LOCAL_NPU_IRQ_IRQn);
 
   return 0;
@@ -78,22 +79,6 @@ void clock_init(void) {
   }
 }
 
-#ifdef COPY_VECTORS
-#include <string.h> // memcpy
-static VECTOR_TABLE_Type MyVectorTable[496] __attribute__((aligned (2048))) __attribute__((section (".bss.noinit.ram_vectors")));
-static void copy_vtor_table_to_ram()
-{
-  if (SCB->VTOR == (uint32_t) MyVectorTable) {
-    return;
-  }
-  memcpy(MyVectorTable, (const void *) SCB->VTOR, sizeof MyVectorTable);
-  __DMB();
-  // Set the new vector table into use.
-  SCB->VTOR = (uint32_t) MyVectorTable;
-  __DSB();
-}
-#endif
-
 static void CpuCacheEnable(void) {
   /* Enable I-Cache */
   SCB_EnableICache();
@@ -103,9 +88,7 @@ static void CpuCacheEnable(void) {
 }
 
 int main (void) {
-#ifdef COPY_VECTORS
-  copy_vtor_table_to_ram();
-#endif
+
   /* Apply pin configuration */
   conductor_pins_config();
 
@@ -116,13 +99,14 @@ int main (void) {
 
   clock_init();
 
-  NpuInit();
-
   /* Initialize STDIO */
   stdio_init();
 
   /* Initialize Virtual I/O */
   vioInit();
+
+  /* Initialize Ethos NPU */
+  NpuInit();
 
 #ifdef CMSIS_shield_header
   shield_setup();
