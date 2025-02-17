@@ -46,6 +46,7 @@ layer:
 
     # - component: AlifSemiconductor::CMSIS Driver:GPIO
     - component: AlifSemiconductor::CMSIS Driver:I2C
+    - component: AlifSemiconductor::CMSIS Driver:SAI
     - component: AlifSemiconductor::CMSIS Driver:USART
 
     - component: AlifSemiconductor::Device:Conductor Tool support
@@ -60,6 +61,7 @@ layer:
 
     - component: AlifSemiconductor::Device:SOC Peripherals:CDC
     - component: AlifSemiconductor::Device:SOC Peripherals:CPI
+    - component: AlifSemiconductor::Device:SOC Peripherals:DMA
     - component: AlifSemiconductor::Device:SOC Peripherals:GPIO
     - component: AlifSemiconductor::Device:SOC Peripherals:MHU
     - component: AlifSemiconductor::Device:SOC Peripherals:MIPI CSI2
@@ -94,10 +96,16 @@ layer:
     - group: Driver
       files:
         - file: ./interface/sensor/source/sensor_drv.c
-        - file: ./driver/audio/audio_drv.c
+        - file: ./driver/audio/Audio_SAI.c
         - file: ./driver/sensor/sensor_config.h
         - file: ./driver/sensor/sensor_drv_hw.c
         - file: ./driver/video/video_drv.c
+
+    - group: Interface
+      files:
+        - file: ./interface/audio/include/audio_drv.h
+        - file: ./interface/sensor/include/sensor_drv.h
+        - file: ./interface/video/include/video_drv.h
 
     - group: Video Processing
       files:
