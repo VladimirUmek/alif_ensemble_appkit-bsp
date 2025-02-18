@@ -9,6 +9,7 @@ layer:
   connections:
     - connect: AppKit-E7 Board
       provides:
+        - AVH_AUDIO
         - AVH_VIDEO
         - CMSIS_USART
         - CMSIS_VIO
@@ -31,10 +32,10 @@ layer:
 
   packs:
     - pack: AlifSemiconductor::Ensemble@^2.0.0-0
-    - pack: ARM::CMSIS@6.1.0
-    - pack: ARM::CMSIS-Compiler@2.1.0
-    - pack: ARM::CMSIS-Driver@2.8.0
-    - pack: Keil::Ensemble_AppKit-E7_BSP
+    - pack: ARM::CMSIS@^6.0.0
+    - pack: ARM::CMSIS-Compiler@^2.1.0
+    - pack: ARM::CMSIS-Driver@^2.8.0
+    - pack: Keil::Ensemble_AppKit-E7_BSP@^1.0.0-0
 
   add-path:
     - ./ConductorTool
@@ -106,16 +107,12 @@ layer:
 
     - group: Driver
       files:
-        - file: ./interface/sensor/source/sensor_drv.c
         - file: ./driver/audio/Audio_SAI.c
-        - file: ./driver/sensor/sensor_config.h
-        - file: ./driver/sensor/sensor_drv_hw.c
         - file: ./driver/video/video_drv.c
 
     - group: Interface
       files:
         - file: ./interface/audio/include/audio_drv.h
-        - file: ./interface/sensor/include/sensor_drv.h
         - file: ./interface/video/include/video_drv.h
 
     - group: Video Processing
