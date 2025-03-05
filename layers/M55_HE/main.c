@@ -39,7 +39,7 @@ __WEAK int32_t shield_setup (void) {
 
 static struct ethosu_driver EthosDriver;
 
-void NPU_HP_IRQHandler(void) {
+void NPU_HE_IRQHandler(void) {
   ethosu_irq_handler(&EthosDriver);
 }
 
