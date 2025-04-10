@@ -120,7 +120,7 @@
       <description>Dual Core example running on M55 High Efficiency and High Performance core</description>
       <board name="AppKit-E7" vendor="Alif Semiconductor"/>
       <project>
-        <environment name="csolution" load="Blinky.csolution.yml"/>
+        <environment name="csolution" load="DualCore.csolution.yml"/>
       </project>
     </example>
   </examples>
