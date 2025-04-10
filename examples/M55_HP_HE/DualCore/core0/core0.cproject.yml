@@ -1,0 +1,56 @@
+project:
+  device: :M55_HP
+  processor:
+    trustzone: secure-only
+
+  packs:
+    - pack: ARM::CMSIS-Compiler@^2.1.0
+
+  define:
+    - CMSIS_target_header: \"AppKit-E7.h\"
+
+  # List components to use for your application.
+  # A software component is a re-usable unit that may be configurable.
+  components:
+    - component: Device:Conductor Tool support
+    - component: Device:Startup&C Startup
+    - component: Device:Retarget IO:STDOUT
+    - component: Device:SOC Peripherals:PINCONF
+
+    - component: CMSIS:CORE
+    - component: CMSIS:OS Tick:SysTick
+    - component: CMSIS:RTOS2:Keil RTX5&Source
+
+    - component: CMSIS-Compiler:CORE
+    - component: CMSIS-Compiler:STDOUT:Custom
+
+    - component: CMSIS Driver:GPIO
+    - component: CMSIS Driver:USART
+    - component: CMSIS Driver:VIO:Board&AppKit-E7
+
+  add-path:
+    - ./ConductorTool
+
+  # List of source groups and files added to a project or a layer.
+  groups:
+    - group: App
+      files:
+        - file: ./app_main.c
+
+    - group: Board
+      files:
+        - file: ./main.c
+        - file: ./main.h
+        - file: ./retarget_stdio.c
+
+    - group: Documentation
+      files:
+        - file: ../README.md
+
+  linker:
+    - script: "./RTE/Device/AE722F80F55D5LS_M55_HP/M55_HP.sct"
+
+  output:
+    type:
+      - elf
+      - bin
