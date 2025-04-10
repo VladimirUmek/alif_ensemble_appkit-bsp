@@ -41,4 +41,3 @@ project:
     type:
       - elf
       - bin
-      - map

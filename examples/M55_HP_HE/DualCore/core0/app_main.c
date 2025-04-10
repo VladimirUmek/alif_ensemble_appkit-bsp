@@ -59,7 +59,7 @@ static __NO_RETURN void thrLED (void *argument) {
 }
 
 /*
-  Thread that che Button state.
+  Thread that checks Button state.
 */
 static __NO_RETURN void thrButton (void *argument) {
   uint32_t last = 0U;
