@@ -22,11 +22,11 @@ solution:
   build-types:
     - type: Debug
       debug: on
-      optimize: none
+      optimize: debug
 
     - type: Release
       debug: off
-      optimize: size
+      optimize: balanced
 
   projects:
     - project: ./core1/core1.cproject.yml
