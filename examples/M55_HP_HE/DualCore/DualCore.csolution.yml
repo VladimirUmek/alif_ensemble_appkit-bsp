@@ -7,6 +7,13 @@ solution:
 
   compiler: AC6
 
+  misc:
+    - for-compiler: AC6
+      C-CPP:
+        - -gdwarf-5
+      ASM:
+        - -gdwarf-5
+
   packs:
     - pack: AlifSemiconductor::Ensemble@^2.0.0-0
     - pack: Keil::Ensemble_AppKit-E7_BSP@^1.0.0-0
