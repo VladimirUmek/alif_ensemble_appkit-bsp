@@ -1,0 +1,5 @@
+cbuild-set:
+  generated-by: vscode-cmsis-csolution version 1.52.0
+  contexts:
+    - context: core1.Debug+Alif-AppKit-E7
+    - context: core0.Debug+Alif-AppKit-E7
