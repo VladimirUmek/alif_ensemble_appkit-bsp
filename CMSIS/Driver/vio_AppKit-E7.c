@@ -2,10 +2,10 @@
  * @file     vio_AppKit-E7.c
  * @brief    Virtual I/O implementation for Alif Semiconductor Ensemble AppKit-E7
  * @version  V1.0.0
- * @date     15. July 2024
+ * @date     11. April 2025
  ******************************************************************************/
 /*
- * Copyright (c) 2024 Arm Limited (or its affiliates).
+ * Copyright (c) 2025 Arm Limited (or its affiliates).
  * All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -25,10 +25,9 @@
 
 /*! \page vio_DevKit Physical I/O Mapping
 The table below lists the physical I/O mapping of this CMSIS-Driver VIO implementation.
-Virtual Resource  | Variable       | Physical Resource on Ensemble DevKit           |
+Virtual Resource  | Variable       | Physical Resource on Ensemble AppKit           |
 :-----------------|:---------------|:-----------------------------------------------|
-vioBUTTON0        | vioSignalIn.0  | SW4 Button                                     |
-vioBUTTON1        | vioSignalIn.1  | SW5 Button                                     |
+vioBUTTON0        | vioSignalIn.0  | Joystick Select Button                         |
 vioJOYup          | vioSignalIn.2  | Joystick Up                                    |
 vioJOYdown        | vioSignalIn.3  | Joystick Down                                  |
 vioJOYleft        | vioSignalIn.4  | Joystick Left                                  |
@@ -52,9 +51,36 @@ vioLED2           | vioSignalOut.2 | RGB LED Blue                               
 
 #if !defined CMSIS_VOUT || !defined CMSIS_VIN
 #include "Driver_GPIO.h"
-#include "board_defs.h"
-
 #include "Driver_GPIO_Private.h"
+
+/* Definitions from board_defs.h                                                          */
+/* Ideally board_defs.h would be included here and pack component would provide the file. */
+/* Local installation of the Conductor Tool could be registered as generator.             */
+//#include "board_defs.h"
+#define BOARD_LEDRGB0_R_GPIO_PORT       12
+#define BOARD_LEDRGB0_R_GPIO_PIN        3
+
+#define BOARD_LEDRGB0_G_GPIO_PORT       7
+#define BOARD_LEDRGB0_G_GPIO_PIN        4
+
+#define BOARD_LEDRGB0_B_GPIO_PORT       12
+#define BOARD_LEDRGB0_B_GPIO_PIN        0
+
+#define BOARD_JOY_SW_A_GPIO_PORT        15
+#define BOARD_JOY_SW_A_GPIO_PIN         0
+
+#define BOARD_JOY_SW_B_GPIO_PORT        15
+#define BOARD_JOY_SW_B_GPIO_PIN         1
+
+#define BOARD_JOY_SW_C_GPIO_PORT        15
+#define BOARD_JOY_SW_C_GPIO_PIN         2
+
+#define BOARD_JOY_SW_D_GPIO_PORT        15
+#define BOARD_JOY_SW_D_GPIO_PIN         3
+
+#define BOARD_JOY_SW_CENTER_GPIO_PORT   15
+#define BOARD_JOY_SW_CENTER_GPIO_PIN    4
+
 #endif
 
 // VIO input, output definitions
@@ -72,14 +98,14 @@ __USED int32_t  vioValue[VIO_VALUE_NUM];    // Memory for value used in vioGetVa
 #endif
 
 #if !defined CMSIS_VIN
-#define JOY_UP_PIN              GPIO_PIN(BOARD_JOY_SW_A_GPIO_PORT, BOARD_JOY_SW_A_GPIO_PIN) /* RIGHT + 45 DEG */
-#define JOY_DOWN_PIN            GPIO_PIN(BOARD_JOY_SW_B_GPIO_PORT, BOARD_JOY_SW_B_GPIO_PIN) /* RIGHT - 45 DEG */
-#define JOY_LEFT_PIN            GPIO_PIN(BOARD_JOY_SW_C_GPIO_PORT, BOARD_JOY_SW_C_GPIO_PIN) /* LEFT  + 45 DEG */
-#define JOY_RIGHT_PIN           GPIO_PIN(BOARD_JOY_SW_D_GPIO_PORT, BOARD_JOY_SW_D_GPIO_PIN) /* LEFT  - 45 DEG */
+#define JOY_UP_PIN              GPIO_PIN(BOARD_JOY_SW_A_GPIO_PORT, BOARD_JOY_SW_A_GPIO_PIN) /* RIGHT - 45 DEG */
+#define JOY_DOWN_PIN            GPIO_PIN(BOARD_JOY_SW_B_GPIO_PORT, BOARD_JOY_SW_B_GPIO_PIN) /* LEFT  - 45 DEG */
+#define JOY_LEFT_PIN            GPIO_PIN(BOARD_JOY_SW_C_GPIO_PORT, BOARD_JOY_SW_C_GPIO_PIN) /* RIGHT + 45 DEG */
+#define JOY_RIGHT_PIN           GPIO_PIN(BOARD_JOY_SW_D_GPIO_PORT, BOARD_JOY_SW_D_GPIO_PIN) /* LEFT  + 45 DEG */
 #define JOY_SELECT_PIN          GPIO_PIN(BOARD_JOY_SW_CENTER_GPIO_PORT, BOARD_JOY_SW_CENTER_GPIO_PIN) /* SELECT/CENTER */
 
-#define BUTTON_0_PIN            GPIO_PIN(BOARD_JOY_SW_B_GPIO_PORT, BOARD_JOY_SW_B_GPIO_PIN) /* Does not work yet - reason unknown */
-#define BUTTON_1_PIN            GPIO_PIN(BOARD_JOY_SW_CENTER_GPIO_PORT, BOARD_JOY_SW_CENTER_GPIO_PIN)
+/* There is no physical button available, vioBUTTON0 is mapped to Joystick Select/Center */
+#define BUTTON_0_PIN            GPIO_PIN(BOARD_JOY_SW_CENTER_GPIO_PORT, BOARD_JOY_SW_CENTER_GPIO_PIN)
 #endif
 
 // Initialize test input, output.
@@ -103,7 +129,9 @@ void vioInit (void) {
   gpio->SetDirection(LED_2_PIN, ARM_GPIO_OUTPUT);
 
   // Turn off all LEDs
-
+  gpio->SetOutput(LED_0_PIN, 0U);
+  gpio->SetOutput(LED_1_PIN, 0U);
+  gpio->SetOutput(LED_2_PIN, 0U);
 #endif
 
 #if !defined CMSIS_VIN
@@ -181,14 +209,6 @@ uint32_t vioGetSignal (uint32_t mask) {
       vioSignalIn |=  vioBUTTON0;
     } else {
       vioSignalIn &= ~vioBUTTON0;
-    }
-  }
-  if ((mask & vioBUTTON1) != 0U) {
-    val = gpio->GetInput(BUTTON_1_PIN);
-    if (val == 0U) {
-      vioSignalIn |=  vioBUTTON1;
-    } else {
-      vioSignalIn &= ~vioBUTTON1;
     }
   }
   if ((mask & vioJOYup) != 0U) {
