@@ -6,9 +6,6 @@ project:
   packs:
     - pack: ARM::CMSIS-Compiler@^2.1.0
 
-  define:
-    - CMSIS_target_header: \"AppKit-E7.h\"
-
   # List components to use for your application.
   # A software component is a re-usable unit that may be configurable.
   components:
@@ -41,7 +38,6 @@ project:
       files:
         - file: ./main.c
         - file: ./main.h
-        - file: ./retarget_stdio.c
 
     - group: Documentation
       files:
