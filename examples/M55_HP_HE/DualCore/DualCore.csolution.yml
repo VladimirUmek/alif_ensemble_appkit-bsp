@@ -1,5 +1,5 @@
 solution:
-  created-for: CMSIS-Toolbox@2.8.0
+  created-for: CMSIS-Toolbox@2.9.0
   cdefault:
 
   select-compiler:
@@ -21,6 +21,14 @@ solution:
     - type: Alif-AppKit-E7
       board: Alif Semiconductor::AppKit-E7
       device: Alif Semiconductor::AE722F80F55D5LS
+      target-set:
+        - set:
+          debugger:
+            name: JLink Server
+            start-pname: M55_HP
+          images:
+            - project-context: M55_HP.Debug
+            - project-context: M55_HE.Debug
 
   build-types:
     - type: Debug
