@@ -29,5 +29,5 @@ solution:
       optimize: balanced
 
   projects:
-    - project: ./core1/core1.cproject.yml
     - project: ./core0/core0.cproject.yml
+    - project: ./core1/core1.cproject.yml

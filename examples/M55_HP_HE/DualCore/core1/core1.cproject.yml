@@ -1,7 +1,7 @@
 project:
   device: :M55_HE
   processor:
-    trustzone: secure-only
+    trustzone: off
 
   # List components to use for your application.
   # A software component is a re-usable unit that may be configurable.

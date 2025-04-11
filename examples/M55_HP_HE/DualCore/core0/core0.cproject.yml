@@ -1,7 +1,7 @@
 project:
   device: :M55_HP
   processor:
-    trustzone: secure-only
+    trustzone: off
 
   packs:
     - pack: ARM::CMSIS-Compiler@^2.1.0
