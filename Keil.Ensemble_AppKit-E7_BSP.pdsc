@@ -29,7 +29,7 @@
 
   <requirements>
     <packages>
-      <package vendor="AlifSemiconductor" name="Ensemble" version="1.2.0-0"/>
+      <package vendor="AlifSemiconductor" name="Ensemble" version="2.0.0-0"/>
       <package vendor="ARM" name="CMSIS" version="6.1.0-0"/>
     </packages>
   </requirements>
@@ -105,7 +105,6 @@
       <board name="AppKit-E7" vendor="Alif Semiconductor"/>
       <project>
         <environment name="csolution" load="Blinky.csolution.yml"/>
-        <environment name="uv"        load="Blinky.uvprojx"/>
       </project>
     </example>
     <example name="Blinky (M55_HP)" folder="examples/M55_HP/Blinky" doc="README.md">
@@ -113,7 +112,6 @@
       <board name="AppKit-E7" vendor="Alif Semiconductor"/>
       <project>
         <environment name="csolution" load="Blinky.csolution.yml"/>
-        <environment name="uv"        load="Blinky.uvprojx"/>
       </project>
     </example>
     <example name="DualCore (M55_HE/M55_HP)" folder="examples/M55_HP_HE/DualCore" doc="README.md">
