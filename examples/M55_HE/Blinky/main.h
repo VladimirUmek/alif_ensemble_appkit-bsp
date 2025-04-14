@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2020-2021 Arm Limited (or its affiliates).
+ * Copyright (c) 2020-2025 Arm Limited (or its affiliates).
  * All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -24,5 +24,5 @@
 /* Prototypes */
 extern int app_main     (void);
 extern int shield_setup (void);
-extern int stdio_init   (void);
+extern int stdout_init  (void);
 #endif
