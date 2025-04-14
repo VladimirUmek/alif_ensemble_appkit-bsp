@@ -29,7 +29,7 @@
 
   <requirements>
     <packages>
-      <package vendor="AlifSemiconductor" name="Ensemble" version="2.0.0-0"/>
+      <package vendor="AlifSemiconductor" name="Ensemble" version="1.3.3-0"/>
       <package vendor="ARM" name="CMSIS" version="6.1.0-0"/>
     </packages>
   </requirements>
