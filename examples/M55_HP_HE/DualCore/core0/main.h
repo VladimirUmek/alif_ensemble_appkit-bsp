@@ -24,5 +24,5 @@
 /* Prototypes */
 extern int app_main     (void);
 extern int shield_setup (void);
-extern int stdio_init   (void);
+extern int stdout_init  (void);
 #endif

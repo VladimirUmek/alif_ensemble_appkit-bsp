@@ -28,8 +28,8 @@ int main (void) {
   /* Apply pin configuration */
   conductor_pins_config();
 
-  /* Initialize STDIO */
-  stdio_init();
+  /* Initialize STDOUT */
+  stdout_init();
 
   /* Initialize Virtual I/O */
   vioInit();
