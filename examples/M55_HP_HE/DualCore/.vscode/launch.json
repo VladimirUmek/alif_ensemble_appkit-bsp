@@ -82,7 +82,6 @@
                 "set *0xe000ed08 = __Vectors",     // SCB->VTOR
                 "set *0xe000e010 = 0x00000000",    // SysTick=>CTRL = 0 (disable SysTick)
                 "set *0xe000ed04 = 0x02000000",    // SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk (clear SysTick pending exception)
-                "set osRtxInfo.kernel.state = 0",  // Inactive Kernel
                 "tbreak main"
             ],
             "target": {
@@ -117,7 +116,6 @@
                 "set *0xe000ed08 = __Vectors",     // SCB->VTOR
                 "set *0xe000e010 = 0x00000000",    // SysTick=>CTRL = 0 (disable SysTick)
                 "set *0xe000ed04 = 0x02000000",    // SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk (clear SysTick pending exception)
-                "set osRtxInfo.kernel.state = 0",  // Inactive Kernel
                 "tbreak main"
             ],
             "target": {
