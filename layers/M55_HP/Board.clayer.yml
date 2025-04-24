@@ -9,7 +9,6 @@ layer:
   connections:
     - connect: AppKit-E7 Board
       provides:
-        - AVH_AUDIO
         - AVH_VIDEO
         - CMSIS_USART
         - CMSIS_VIO
@@ -32,7 +31,7 @@ layer:
 
   packs:
     - pack: AlifSemiconductor::Ensemble@^2.0.0-0
-    - pack: ARM::CMSIS@^6.0.0
+    - pack: ARM::CMSIS@^6.2.0-0
     - pack: ARM::CMSIS-Compiler@^2.1.0
     - pack: ARM::CMSIS-Driver@^2.8.0
     - pack: ARM::ethos-u-core-driver@^1.24.8
@@ -40,7 +39,6 @@ layer:
 
   add-path:
     - ./ConductorTool
-    - ./interface/audio/include
     - ./interface/video/include
 
   misc:
@@ -107,12 +105,10 @@ layer:
 
     - group: Driver
       files:
-        - file: ./driver/audio/audio_drv.c
         - file: ./driver/video/video_drv.c
 
     - group: Interface
       files:
-        - file: ./interface/audio/include/audio_drv.h
         - file: ./interface/video/include/video_drv.h
 
     - group: Video Processing
