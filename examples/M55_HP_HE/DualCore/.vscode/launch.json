@@ -11,16 +11,15 @@
             "cwd": "${workspaceFolder}",
             "program": "out/core0/Alif-AppKit-E7/Debug/core0.axf",
             "gdb": "arm-none-eabi-gdb",
+            "preLaunchTask": "CMSIS Load",
             "initCommands": [
-                "load out/core0/Alif-AppKit-E7/Debug/core0.hex",
+                "monitor reset halt",
                 "tbreak main"
             ],
             "target": {
                 "server": "pyocd",
                 "serverParameters": [
-                    "--probe", "cmsisdap:",
-                    // "-r", "-R", "5555", // Start Probe server in addition to the GDB server (port 5555)
-                    // "--core", "0",  // Start GDB server for core 0 only
+                    "--probe", "cmsisdap:"
                 ],
                 "port": "3333"
             },
@@ -35,10 +34,6 @@
             "cwd": "${workspaceFolder}",
             "program": "out/core1/Alif-AppKit-E7/Debug/core1.axf",
             "gdb": "arm-none-eabi-gdb",
-            "initCommands": [
-                "load out/core1/Alif-AppKit-E7/Debug/core1.hex",
-                "tbreak main"
-            ],
             "target": {
                 "port": "3334"
             },
@@ -50,16 +45,15 @@
         //     "cwd": "${workspaceFolder}",
         //     "program": "out/core1/Alif-AppKit-E7/Debug/core1.axf",
         //     "gdb": "arm-none-eabi-gdb",
+        //     "preLaunchTask": "CMSIS Load",
         //     "initCommands": [
-        //         "load out/core1/Alif-AppKit-E7/Debug/core1.hex",
+        //         "monitor reset halt",
         //         "tbreak main"
         //     ],
         //     "target": {
         //         "server": "pyocd",
         //         "serverParameters": [
-        //             "--probe", "cmsisdap:",
-        //             // "--probe", "remote:localhost:5555",
-        //             "--core", "1",  // Start GDB server for core 1 only
+        //             "--probe", "cmsisdap:"
         //         ],
         //         "port": "3334"
         //     },
@@ -68,21 +62,26 @@
         //     }
         // },
         {
+            "name": "M55_HP Core0 (attach)",
+            "type": "gdbtarget",
+            "request": "attach",
+            "cwd": "${workspaceFolder}",
+            "program": "out/core0/Alif-AppKit-E7/Debug/core0.axf",
+            "gdb": "arm-none-eabi-gdb",
+            "target": {
+                "port": "3333"
+            },
+        },
+        {
             "name": "M55_HP Core0 (launch - J-LINK)",
             "type": "gdbtarget",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "program": "out/core0/Alif-AppKit-E7/Debug/core0.axf",
             "gdb": "arm-none-eabi-gdb",
+            "preLaunchTask": "CMSIS Load",
             "initCommands": [
-                "load out/core0/Alif-AppKit-E7/Debug/core0.hex",
                 "monitor reset",
-                // "set $control = 0",                // CONTROL regsiter
-                // "set $msp = __Vectors[0]",         // Main Stack Pointer (MSP)
-                // "set $pc  = __Vectors[1]",         // Program Counter (PC)
-                // "set *0xe000ed08 = __Vectors",     // SCB->VTOR
-                // "set *0xe000e010 = 0x00000000",    // SysTick=>CTRL = 0 (disable SysTick)
-                // "set *0xe000ed04 = 0x02000000",    // SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk (clear SysTick pending exception)
                 "tbreak main"
             ],
             "target": {
@@ -109,17 +108,11 @@
             "cwd": "${workspaceFolder}",
             "program": "out/core1/Alif-AppKit-E7/Debug/core1.axf",
             "gdb": "arm-none-eabi-gdb",
-            "initCommands": [
-                "load out/core1/Alif-AppKit-E7/Debug/core1.hex",
-                "monitor reset",
-                // "set $control = 0",                // CONTROL regsiter
-                // "set $msp = __Vectors[0]",         // Main Stack Pointer (MSP)
-                // "set $pc  = __Vectors[1]",         // Program Counter (PC)
-                // "set *0xe000ed08 = __Vectors",     // SCB->VTOR
-                // "set *0xe000e010 = 0x00000000",    // SysTick=>CTRL = 0 (disable SysTick)
-                // "set *0xe000ed04 = 0x02000000",    // SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk (clear SysTick pending exception)
-                "tbreak main"
-            ],
+        //     "preLaunchTask": "CMSIS Load",
+        //     "initCommands": [
+        //         "monitor reset",
+        //         "tbreak main"
+        //     ],
             "target": {
                 "server": "JLinkGDBServer",
                 "serverParameters": [

@@ -1,0 +1,72 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMSIS Erase",
+            "type": "shell",
+            "command": [
+                "echo Erase > .cmd.jlink &&",
+                "echo Exit >> .cmd.jlink &&",
+                "jlink -device AE722F80F55D5_HP -if SWD -speed auto -commandfile .cmd.jlink"
+                // "jlink -device AE722F80F55D5_HE -if SWD -speed auto -commandfile .cmd.jlink"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMSIS Load",
+            "type": "shell",
+            "command": [
+                "echo LoadFile out/core0/Alif-AppKit-E7/Debug/core0.hex > .cmd.jlink &&",
+                "echo LoadFile out/core1/Alif-AppKit-E7/Debug/core1.hex >> .cmd.jlink &&",
+                "echo Exit >> .cmd.jlink &&",
+                "jlink -device AE722F80F55D5_HP -if SWD -speed auto -commandfile .cmd.jlink"
+                // "jlink -device AE722F80F55D5_HE -if SWD -speed auto -commandfile .cmd.jlink"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMSIS Run",
+            "type": "shell",
+            "command": "JLinkGDBServer",
+            "args": [
+                "-device", "AE722F80F55D5_HP",
+                // "-device", "AE722F80F55D5_HE",
+                "-endian", "little",
+                "-if", "SWD",
+                "-speed", "auto",
+                "-nohalt",
+                "-noir",
+                "-nogui",
+                "-singlerun",
+                "-localhostonly",
+                "-port", "3333"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMSIS Load+Run",
+            "dependsOn": [
+                "CMSIS Load",
+                "CMSIS Run"
+            ],
+            "dependsOrder": "sequence",
+            "type": "shell",
+            "problemMatcher": []
+        },
+        {
+            "label": "CMSIS Load+Debug",
+            "dependsOn": [
+                "CMSIS Load"
+            ],
+            "dependsOrder": "sequence",
+            "type": "shell",
+            "command": "C:/Keil/UV4/UV4.exe",
+            "args": [
+                "${command:cmsis-csolution.getSolutionFile}"
+            ],
+            "problemMatcher": []
+        },
+    ]
+}
