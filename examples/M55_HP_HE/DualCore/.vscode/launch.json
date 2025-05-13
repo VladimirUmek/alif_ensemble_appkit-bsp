@@ -1,14 +1,94 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "M55_HP Core0 (launch - pyOCD)",
+            "name": "M55_HP JLink (launch)",
             "type": "gdbtarget",
             "request": "launch",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/",
+            "program": "out/core0/Alif-AppKit-E7/Debug/core0.axf",
+            "gdb": "arm-none-eabi-gdb",
+            "preLaunchTask": "CMSIS Load",
+            "initCommands": [
+                "monitor reset",
+                "tbreak main"
+            ],
+            "target": {
+                "server": "JLinkGDBServerCL",
+                "serverParameters": [
+                    "-device",
+                    "AE722F80F55D5LS:M55_HP",
+                    "-endian",
+                    "little",
+                    "-if",
+                    "SWD",
+                    "-speed",
+                    "auto",
+                    "-noir",
+                    "-vd",
+                    "-nogui",
+                    "-localhostonly"
+                ],
+                "port": "3333"
+            },
+            "cmsis": {
+                "updateConfiguration": "auto"
+            }
+        },
+        {
+            "name": "M55_HP JLink (attach)",
+            "type": "gdbtarget",
+            "request": "attach",
+            "cwd": "${workspaceFolder}/",
+            "program": "out/core0/Alif-AppKit-E7/Debug/core0.axf",
+            "gdb": "arm-none-eabi-gdb",
+            "initCommands": [
+                ""
+            ],
+            "target": {
+                "port": "3333"
+            },
+            "cmsis": {
+                "updateConfiguration": "auto"
+            }
+        },
+        {
+            "name": "M55_HE JLink (launch)",
+            "type": "gdbtarget",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/",
+            "program": "out/core1/Alif-AppKit-E7/Debug/core1.axf",
+            "gdb": "arm-none-eabi-gdb",
+            "initCommands": [
+                ""
+            ],
+            "target": {
+                "server": "JLinkGDBServerCL",
+                "serverParameters": [
+                    "-device",
+                    "AE722F80F55D5LS:M55_HE",
+                    "-endian",
+                    "little",
+                    "-if",
+                    "SWD",
+                    "-speed",
+                    "auto",
+                    "-noir",
+                    "-vd",
+                    "-nogui",
+                    "-localhostonly"
+                ],
+                "port": "3334"
+            },
+            "cmsis": {
+                "updateConfiguration": "auto"
+            }
+        },
+        {
+            "name": "M55_HP CMSIS_DAP@pyOCD (launch)",
+            "type": "gdbtarget",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/",
             "program": "out/core0/Alif-AppKit-E7/Debug/core0.axf",
             "gdb": "arm-none-eabi-gdb",
             "preLaunchTask": "CMSIS Load",
@@ -19,116 +99,50 @@
             "target": {
                 "server": "pyocd",
                 "serverParameters": [
-                    "--probe", "cmsisdap:"
+                    "--probe",
+                    "cmsisdap:",
+                    "--persist"
                 ],
                 "port": "3333"
             },
             "cmsis": {
-                "cbuildRunFile": "Alif-AppKit-E7.cbuild-run.yml"
+                "cbuildRunFile": "${command:cmsis-csolution.getCbuildRunFile}",
+                "updateConfiguration": "auto"
             }
         },
         {
-            "name": "M55_HE Core1 (attach)",
+            "name": "M55_HP CMSIS_DAP@pyOCD (attach)",
             "type": "gdbtarget",
             "request": "attach",
-            "cwd": "${workspaceFolder}",
-            "program": "out/core1/Alif-AppKit-E7/Debug/core1.axf",
-            "gdb": "arm-none-eabi-gdb",
-            "target": {
-                "port": "3334"
-            },
-        },
-        // {
-        //     "name": "M55_HE Core1 (launch - pyOCD)",
-        //     "type": "gdbtarget",
-        //     "request": "launch",
-        //     "cwd": "${workspaceFolder}",
-        //     "program": "out/core1/Alif-AppKit-E7/Debug/core1.axf",
-        //     "gdb": "arm-none-eabi-gdb",
-        //     "preLaunchTask": "CMSIS Load",
-        //     "initCommands": [
-        //         "monitor reset halt",
-        //         "tbreak main"
-        //     ],
-        //     "target": {
-        //         "server": "pyocd",
-        //         "serverParameters": [
-        //             "--probe", "cmsisdap:"
-        //         ],
-        //         "port": "3334"
-        //     },
-        //     "cmsis": {
-        //         "cbuildRunFile": "Alif-AppKit-E7.cbuild-run.yml"
-        //     }
-        // },
-        {
-            "name": "M55_HP Core0 (attach)",
-            "type": "gdbtarget",
-            "request": "attach",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/",
             "program": "out/core0/Alif-AppKit-E7/Debug/core0.axf",
             "gdb": "arm-none-eabi-gdb",
-            "target": {
-                "port": "3333"
-            },
-        },
-        {
-            "name": "M55_HP Core0 (launch - J-LINK)",
-            "type": "gdbtarget",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "program": "out/core0/Alif-AppKit-E7/Debug/core0.axf",
-            "gdb": "arm-none-eabi-gdb",
-            "preLaunchTask": "CMSIS Load",
             "initCommands": [
-                "monitor reset",
-                "tbreak main"
+                ""
             ],
             "target": {
-                "server": "JLinkGDBServer",
-                "serverParameters": [
-                    "-device", "AE722F80F55D5_HP",
-                    // "-device", "${command:cmsis-csolution.getDeviceName}_${command:cmsis-csolution.getProcessorName}",
-                    // "-JLinkDevicesXmlPath", ".alif/JLinkDevices.xml",
-                    "-endian", "little",
-                    "-if", "SWD",
-                    "-speed", "auto",
-                    "-noir",
-                    "-vd",
-                    "-nogui",
-                    "-localhostonly"
-                ],
                 "port": "3333"
+            },
+            "cmsis": {
+                "updateConfiguration": "auto"
             }
         },
         {
-            "name": "M55_HE Core1 (launch - J-LINK)",
+            "name": "M55_HE CMSIS_DAP@pyOCD (attach)",
             "type": "gdbtarget",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
+            "request": "attach",
+            "cwd": "${workspaceFolder}/",
             "program": "out/core1/Alif-AppKit-E7/Debug/core1.axf",
             "gdb": "arm-none-eabi-gdb",
-        //     "preLaunchTask": "CMSIS Load",
-        //     "initCommands": [
-        //         "monitor reset",
-        //         "tbreak main"
-        //     ],
+            "initCommands": [
+                ""
+            ],
             "target": {
-                "server": "JLinkGDBServer",
-                "serverParameters": [
-                    "-device", "AE722F80F55D5_HE",
-                    // "-device", "${command:cmsis-csolution.getDeviceName}_${command:cmsis-csolution.getProcessorName}",
-                    // "-JLinkDevicesXmlPath", ".alif/JLinkDevices.xml",
-                    "-endian", "little",
-                    "-if", "SWD",
-                    "-speed", "auto",
-                    "-noir",
-                    "-vd",
-                    "-nogui",
-                    "-localhostonly"
-                ],
                 "port": "3334"
+            },
+            "cmsis": {
+                "updateConfiguration": "auto"
             }
-        },
+        }
     ]
 }
