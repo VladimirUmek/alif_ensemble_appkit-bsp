@@ -21,16 +21,23 @@
 #include "cmsis_vstream.h"
 #include "Driver_SAI.h"
 
-#ifdef _RTE_
-#include "RTE_Components.h"
+/* Connect to hardware via Driver_SAI#                 */
+/* Select driver control block for hardware interface. */
+#ifndef AUDIO_CFG_SAI_INSTANCE
+#define AUDIO_CFG_SAI_INSTANCE      3
 #endif
-#include CMSIS_device_header
 
-#include "vstream_audio_in_config.h"
+/* Number of bits per sample <0=>8 <1=>16 <2=>24 <3=>32  */
+/* Defines number of bits of information in each sample. */
+#ifndef AUDIO_CFG_BIT_DEPTH
+#define AUDIO_CFG_BIT_DEPTH         16
+#endif
 
-/* Expand Driver_vStream(x) to Driver_vStreamx (where x is the #define name) */
-#define Driver_vStream_(n)     Driver_vStream##n
-#define Driver_vStream(n)      Driver_vStream_(n)
+/* Number of samples per second */
+/* Defines audio sampling rate. */
+#ifndef AUDIO_CFG_SAMPLE_RATE
+#define AUDIO_CFG_SAMPLE_RATE       16000U
+#endif
 
 /* SAI Mode Definition */
 #define AUDIO_CFG_SAI_MODE      ARM_SAI_MODE_MASTER
@@ -40,6 +47,9 @@
 /* Definitions */
 #define AUDIO_FLAGS_INIT        (1U << 0)
 #define AUDIO_FLAGS_SINGLE      (1U << 1)
+
+/* Low Level Driver Instance */
+extern ARM_DRIVER_SAI           ARM_Driver_SAI_(AUDIO_CFG_SAI_INSTANCE);
 
 typedef struct audio_buf_s {
   void    *data;              /* Data buffer pointer     */
@@ -114,7 +124,7 @@ static void Driver_SAI_Callback (uint32_t event) {
 }
 
 /* Initialize streaming interface */
-int32_t Initialize (vStreamEvent_t event_cb) {
+static int32_t Initialize (vStreamEvent_t event_cb) {
   int32_t status;
 
   hAudioIn.callback = event_cb;
@@ -151,7 +161,7 @@ int32_t Initialize (vStreamEvent_t event_cb) {
 }
 
 /* De-initialize streaming interface */
-int32_t Uninitialize (void) {
+static int32_t Uninitialize (void) {
 
   /* Stop SAI receiver */
   hAudioIn.drv->Control(ARM_SAI_CONTROL_RX, 0U, 0U);
@@ -172,7 +182,7 @@ int32_t Uninitialize (void) {
 
 }
 /* Set streaming data buffer */
-int32_t SetBuf (void *buf, uint32_t buf_size, uint32_t block_size) {
+static int32_t SetBuf (void *buf, uint32_t buf_size, uint32_t block_size) {
   int32_t status;
 
   if (buf == NULL) {
@@ -192,7 +202,7 @@ int32_t SetBuf (void *buf, uint32_t buf_size, uint32_t block_size) {
   return (status);
 }
 /* Start streaming */
-int32_t Start (uint32_t mode) {
+static int32_t Start (uint32_t mode) {
   int32_t rval;
   uint32_t num;
 
@@ -230,7 +240,7 @@ int32_t Start (uint32_t mode) {
   return rval;
 }
 /* Stop streaming */
-int32_t Stop (void) {
+static int32_t Stop (void) {
   int32_t status;
   int32_t rval;
 
@@ -254,7 +264,7 @@ int32_t Stop (void) {
 }
 
 /* Get pointer to a data block */
-void *GetBlock (void) {
+static void *GetBlock (void) {
   uint32_t buf_index;
   void *p;
 
@@ -278,7 +288,7 @@ void *GetBlock (void) {
 }
 
 /* Release data block */
-int32_t ReleaseBlock (void) {
+static int32_t ReleaseBlock (void) {
   int32_t status;
 
   /* Check if there is anything to release */
@@ -297,7 +307,7 @@ int32_t ReleaseBlock (void) {
 }
 
 /* Get Audio Interface status */
-vStreamStatus_t GetStatus (void) {
+static vStreamStatus_t GetStatus (void) {
   vStreamStatus_t status;
 
   /* Get audio in status */
@@ -309,7 +319,7 @@ vStreamStatus_t GetStatus (void) {
   return (status);
 }
 
-vStreamDriver_t Driver_vStream(AUDIO_CFG_VSTREAM_INSTANCE) = {
+vStreamDriver_t Driver_vStreamAudioIn = {
   Initialize,
   Uninitialize,
   SetBuf,

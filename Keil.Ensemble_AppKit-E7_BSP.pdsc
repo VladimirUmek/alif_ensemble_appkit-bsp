@@ -94,11 +94,11 @@
     </component>
 
     <!-- CMSIS vStream Driver component for AppKit-E7 -->
-    <component Cclass="CMSIS Driver" Cgroup="vStream" Csub="Audio In" Cvariant="AppKit-E7" Cversion="1.0.0" Capiversion="1.0.0" condition="AppKit-E7">
+    <component Cclass="CMSIS Driver" Cgroup="vStream" Csub="AudioIn" Cvariant="AppKit-E7" Cversion="1.0.0" Capiversion="1.0.0" condition="AppKit-E7">
       <description>Audio Input vStream implementation for Ensemble AppKit AK-E7-AIML</description>
       <RTE_Components_h>
-        #define RTE_VSTREAM_AUDIO_IN
-        #define RTE_VSTREAM_AUDIO_IN_APPKIT_E7
+        #define RTE_VSTREAM_AUDIOIN
+        #define RTE_VSTREAM_AUDIOIN_APPKIT_E7
       </RTE_Components_h>
       <files>
         <file category="source" name="CMSIS/Driver/vstream_audio_in.c"/>
