@@ -102,7 +102,6 @@
       </RTE_Components_h>
       <files>
         <file category="source" name="CMSIS/Driver/vstream_audio_in.c"/>
-        <file category="source" name="CMSIS/Driver/vstream_audio_in_config.h" attr="config" version="1.0.0"/>
       </files>
     </component>
   </components>
