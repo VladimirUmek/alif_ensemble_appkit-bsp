@@ -9,10 +9,11 @@ layer:
   connections:
     - connect: AppKit-E7 Board
       provides:
-        - AVH_VIDEO
         - CMSIS_USART
         - CMSIS_VIO
         - CMSIS_VSTREAM_AUDIOIN
+        - CMSIS_VSTREAM_VIDEOIN
+        - CMSIS_VSTREAM_VIDEOOUT
         - STDIN
         - STDOUT
         - STDERR
@@ -40,7 +41,6 @@ layer:
 
   add-path:
     - ./ConductorTool
-    - ./interface/video/include
 
   misc:
     - for-compiler: AC6
@@ -56,6 +56,8 @@ layer:
     - component: CMSIS Driver:SAI
     - component: CMSIS Driver:USART
     - component: CMSIS Driver:vStream:AudioIn&AppKit-E7
+    - component: CMSIS Driver:vStream:VideoIn&AppKit-E7
+    - component: CMSIS Driver:vStream:VideoOut&AppKit-E7
 
     - component: Device:Conductor Tool support
     - component: Device:Startup&C Startup
@@ -104,21 +106,6 @@ layer:
       files:
         - file: ./ethosu_cb_dcache.c
         - file: ./ethosu_cb_os_rtos2.c
-
-    - group: Driver
-      files:
-        - file: ./driver/video/video_drv.c
-
-    - group: Interface
-      files:
-        - file: ./interface/video/include/video_drv.h
-
-    - group: Video Processing
-      files:
-        - file: ./driver/video/bayer.h
-        - file: ./driver/video/bayer2rgb.c
-        - file: ./driver/video/image_processing.h
-        - file: ./driver/video/image_processing.c
 
   linker:
     - script: RTE/Device/AE722F80F55D5LS_M55_HP/M55_HP.sct
