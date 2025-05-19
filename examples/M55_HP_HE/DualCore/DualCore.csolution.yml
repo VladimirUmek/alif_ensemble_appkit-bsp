@@ -7,6 +7,10 @@ solution:
 
   compiler: AC6
 
+  define:
+    - OS_IDLE_THREAD_NAME: \"Idle\"
+    - OS_TIMER_THREAD_NAME: \"Timer\"
+
   packs:
     - pack: AlifSemiconductor::Ensemble@^2.0.0-0
     - pack: Keil::Ensemble_AppKit-E7_BSP@^1.0.0-0

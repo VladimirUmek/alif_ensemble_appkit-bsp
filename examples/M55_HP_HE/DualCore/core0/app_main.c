@@ -26,6 +26,14 @@
 #include "cmsis_os2.h"                  // ::CMSIS:RTOS2
 #include "cmsis_vio.h"
 
+/* Thread attributes for the app_main thread */
+osThreadAttr_t attr_app_main  = { .name = "app_main"  };
+
+/* Thread attributes for the LED thread */
+osThreadAttr_t attr_thrLED    = { .name = "thrLED"    };
+
+/* Thread attributes for the Button thread */
+osThreadAttr_t attr_thrButton = { .name = "thrButton" };
 
 static osThreadId_t tid_thrLED;         // Thread id of thread: LED
 static osThreadId_t tid_thrButton;      // Thread id of thread: Button
@@ -68,10 +76,10 @@ static __NO_RETURN void thrButton (void *argument) {
   (void)argument;
 
   for (;;) {
-    state = (vioGetSignal(vioBUTTON0));           // Get pressed Button state
+    state = (vioGetSignal(vioBUTTON0));         // Get pressed Button state
     if (state != last) {
       if (state == 1U) {
-        osThreadFlagsSet(tid_thrLED, 1U);         // Set flag to thrLED
+        osThreadFlagsSet(tid_thrLED, 1U);       // Set flag to thrLED
       }
       last = state;
     }
@@ -88,11 +96,12 @@ __NO_RETURN void app_main_thread (void *argument) {
   printf("DualCore example\n");
 
   /* Create LED and Button threads */
-  tid_thrLED = osThreadNew(thrLED, NULL, NULL);
-  tid_thrButton = osThreadNew(thrButton, NULL, NULL);
+  tid_thrLED = osThreadNew(thrLED, NULL, &attr_thrLED);
+  tid_thrButton = osThreadNew(thrButton, NULL, &attr_thrButton);
 
-  /* Loop forever */
   for (;;) {
+    /* Delay indefinitely */
+    osDelay(osWaitForever);
   }
 }
 
@@ -100,8 +109,8 @@ __NO_RETURN void app_main_thread (void *argument) {
   Application initialization.
 */
 int app_main (void) {
-  osKernelInitialize();                         /* Initialize CMSIS-RTOS2 */
-  osThreadNew(app_main_thread, NULL, NULL);
-  osKernelStart();                              /* Start thread execution */
+  osKernelInitialize();                         // Initialize CMSIS-RTOS2
+  osThreadNew(app_main_thread, NULL, &attr_app_main);
+  osKernelStart();                              // Start thread execution
   return 0;
 }
