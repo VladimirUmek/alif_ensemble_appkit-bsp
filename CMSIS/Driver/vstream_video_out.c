@@ -137,22 +137,22 @@ static int32_t Initialize (vStreamEvent_t event_cb) {
       rval = VSTREAM_ERROR;
     }
     else {
-	    status = DriverCDC->Stop();
-	    if (status != ARM_DRIVER_OK) {
-	      rval = VSTREAM_ERROR;
-	    }
+      status = DriverCDC->Stop();
+      if (status != ARM_DRIVER_OK) {
+        rval = VSTREAM_ERROR;
+      }
 
-	    /* Enable scanline event (i.e. start of frame) */
-	    status = DriverCDC->Control(CDC200_SCANLINE0_EVENT, 1U);
-	    if (status != ARM_DRIVER_OK) {
-	      rval = VSTREAM_ERROR;
-	    }
+      /* Enable scanline event (i.e. start of frame) */
+      status = DriverCDC->Control(CDC200_SCANLINE0_EVENT, 1U);
+      if (status != ARM_DRIVER_OK) {
+        rval = VSTREAM_ERROR;
+      }
 
-	    /* Configure display */
-	    status = DriverCDC->Control(CDC200_CONFIGURE_DISPLAY, NULL);
-	    if (status != ARM_DRIVER_OK) {
-	      rval = VSTREAM_ERROR;
-	    }
+      /* Configure display */
+      status = DriverCDC->Control(CDC200_CONFIGURE_DISPLAY, NULL);
+      if (status != ARM_DRIVER_OK) {
+        rval = VSTREAM_ERROR;
+      }
     }
   }
 
