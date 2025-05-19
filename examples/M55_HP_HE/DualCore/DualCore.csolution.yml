@@ -33,5 +33,5 @@ solution:
       optimize: balanced
 
   projects:
-    - project: ./core0/core0.cproject.yml
-    - project: ./core1/core1.cproject.yml
+    - project: ./HPcore/HPcore.cproject.yml
+    - project: ./HEcore/HEcore.cproject.yml
