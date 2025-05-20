@@ -4,8 +4,7 @@ solution:
 
   select-compiler:
     - compiler: AC6
-
-  compiler: AC6
+    - compiler: GCC
 
   define:
     - OS_IDLE_THREAD_NAME: \"Idle\"
@@ -26,7 +25,7 @@ solution:
   build-types:
     - type: Debug
       debug: on
-      optimize: debug
+      optimize: none
 
     - type: Release
       debug: off
