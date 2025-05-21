@@ -32,5 +32,5 @@ solution:
       optimize: balanced
 
   projects:
-    - project: ./HPcore/HPcore.cproject.yml
-    - project: ./HEcore/HEcore.cproject.yml
+    - project: ./M55_HP/M55_HP.cproject.yml
+    - project: ./M55_HE/M55_HE.cproject.yml

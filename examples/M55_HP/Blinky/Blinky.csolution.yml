@@ -3,7 +3,7 @@ solution:
   created-for: CMSIS-Toolbox@2.4.0
   cdefault:
 
-  compiler: AC6
+  compiler: GCC
 
   # List the packs that define the device and/or board.
   packs:
@@ -18,6 +18,12 @@ solution:
     - type: AppKit-E7
       board: Alif Semiconductor::AppKit-E7
       device: Alif Semiconductor::AE722F80F55D5LS:M55_HP
+      target-set:
+        - set:
+          debugger:
+            name: CMSIS-DAP
+          images:
+            - project-context: Blinky.Debug
 
   # List of different build configurations.
   build-types:

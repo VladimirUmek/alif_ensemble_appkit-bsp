@@ -41,10 +41,11 @@ project:
         - file: ./main.c
         - file: ./main.h
 
-  linker:
-    - script: "./RTE/Device/AE722F80F55D5LS_M55_HP/M55_HP.sct"
+  # linker:
+  #   - script: "./RTE/Device/AE722F80F55D5LS_M55_HP/M55_HP.sct"
 
   output:
     type:
       - elf
       - bin
+      - map
