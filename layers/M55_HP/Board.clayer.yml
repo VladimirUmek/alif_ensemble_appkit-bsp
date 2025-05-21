@@ -9,10 +9,11 @@ layer:
   connections:
     - connect: AppKit-E7 Board
       provides:
-        - AVH_AUDIO
-        - AVH_VIDEO
         - CMSIS_USART
         - CMSIS_VIO
+        - CMSIS_VSTREAM_AUDIO_IN
+        - CMSIS_VSTREAM_VIDEO_IN
+        - CMSIS_VSTREAM_VIDEO_OUT
         - STDIN
         - STDOUT
         - STDERR
@@ -32,7 +33,7 @@ layer:
 
   packs:
     - pack: AlifSemiconductor::Ensemble@^2.0.0-0
-    - pack: ARM::CMSIS@^6.0.0
+    - pack: ARM::CMSIS@^6.2.0-0
     - pack: ARM::CMSIS-Compiler@^2.1.0
     - pack: ARM::CMSIS-Driver@^2.8.0
     - pack: ARM::ethos-u-core-driver@^1.24.8
@@ -40,8 +41,6 @@ layer:
 
   add-path:
     - ./ConductorTool
-    - ./interface/audio/include
-    - ./interface/video/include
 
   misc:
     - for-compiler: AC6
@@ -56,6 +55,9 @@ layer:
     - component: CMSIS Driver:I2C
     - component: CMSIS Driver:SAI
     - component: CMSIS Driver:USART
+    - component: CMSIS Driver:vStream:AudioIn&AppKit-E7
+    - component: CMSIS Driver:vStream:VideoIn&AppKit-E7
+    - component: CMSIS Driver:vStream:VideoOut&AppKit-E7
 
     - component: Device:Conductor Tool support
     - component: Device:Startup&C Startup
@@ -104,23 +106,6 @@ layer:
       files:
         - file: ./ethosu_cb_dcache.c
         - file: ./ethosu_cb_os_rtos2.c
-
-    - group: Driver
-      files:
-        - file: ./driver/audio/audio_drv.c
-        - file: ./driver/video/video_drv.c
-
-    - group: Interface
-      files:
-        - file: ./interface/audio/include/audio_drv.h
-        - file: ./interface/video/include/video_drv.h
-
-    - group: Video Processing
-      files:
-        - file: ./driver/video/bayer.h
-        - file: ./driver/video/bayer2rgb.c
-        - file: ./driver/video/image_processing.h
-        - file: ./driver/video/image_processing.c
 
   linker:
     - script: RTE/Device/AE722F80F55D5LS_M55_HP/M55_HP.sct
