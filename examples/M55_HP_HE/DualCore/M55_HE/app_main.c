@@ -22,6 +22,12 @@
 #include "cmsis_os2.h"
 #include "cmsis_vio.h"
 
+/* Thread attributes for the app_main thread */
+osThreadAttr_t attr_app_main = {
+  .name = "app_main",
+};
+
+/* Loop counter */
 uint32_t core1_loop_counter = 0xFFFFFFFFU;
 
 /*
@@ -53,7 +59,7 @@ __NO_RETURN void app_main_thread (void *argument) {
 */
 int app_main (void) {
   osKernelInitialize();                         /* Initialize CMSIS-RTOS2 */
-  osThreadNew(app_main_thread, NULL, NULL);
+  osThreadNew(app_main_thread, NULL, &attr_app_main);
   osKernelStart();                              /* Start thread execution */
   return 0;
 }

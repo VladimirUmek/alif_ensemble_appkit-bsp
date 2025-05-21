@@ -4,8 +4,11 @@ solution:
 
   select-compiler:
     - compiler: AC6
+    - compiler: GCC
 
-  compiler: AC6
+  define:
+    - OS_IDLE_THREAD_NAME: \"Idle\"
+    - OS_TIMER_THREAD_NAME: \"Timer\"
 
   packs:
     - pack: AlifSemiconductor::Ensemble@^2.0.0-0
@@ -22,12 +25,12 @@ solution:
   build-types:
     - type: Debug
       debug: on
-      optimize: debug
+      optimize: none
 
     - type: Release
       debug: off
       optimize: balanced
 
   projects:
-    - project: ./core0/core0.cproject.yml
-    - project: ./core1/core1.cproject.yml
+    - project: ./M55_HP/M55_HP.cproject.yml
+    - project: ./M55_HE/M55_HE.cproject.yml
