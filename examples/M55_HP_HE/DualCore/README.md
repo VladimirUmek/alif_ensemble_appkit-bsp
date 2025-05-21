@@ -7,8 +7,8 @@ The **Dual Core** project is an example project that shows how to configure dual
 The DualCore project is generated using the [CMSIS-Toolbox](https://open-cmsis-pack.github.io/cmsis-toolbox/build-overview) and is defined in [`csolution`](https://open-cmsis-pack.github.io/cmsis-toolbox/YML-Input-Format) format:
 
 - [`DualCore.csolution.yml`](./DualCore.csolution.yml) lists the required packs, defines, hardware targets, and the build-types (along with the compiler).
-- [`HPcore.cproject.yml`](./HPcore.cproject.yml) defines the source files and the software components for the M55_HP core.
-- [`HEcore.cproject.yml`](./HEcore.cproject.yml) defines the source files and the software components for the M55_HE core.
+- [`M55_HP.cproject.yml`](./M55_HP.cproject.yml) defines the source files and the software components for the M55_HP core.
+- [`M55_HE.cproject.yml`](./M55_HE.cproject.yml) defines the source files and the software components for the M55_HE core.
 
 ## Operation
 
