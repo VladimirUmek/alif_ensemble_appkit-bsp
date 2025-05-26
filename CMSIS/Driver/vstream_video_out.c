@@ -58,7 +58,7 @@ typedef struct {
 } StreamHandle_t;
 
 /* vStream Handle */
-static StreamHandle_t hVideoOut;
+static StreamHandle_t hVideoOut = {0};
 
 /* Low Level Driver Callback */
 static void DriverCDC_Callback(uint32_t cb_event) {
@@ -121,8 +121,11 @@ static int32_t Initialize (vStreamEvent_t event_cb) {
   int32_t rval;
   int32_t status;
 
-  hVideoOut.callback = event_cb;
-  hVideoOut.flags    = 0U;
+  hVideoOut.callback  = event_cb;
+  hVideoOut.active    = 0U;
+  hVideoOut.underflow = 0U;
+  hVideoOut.eos       = 0U;
+  hVideoOut.flags     = 0U;
 
   rval = VSTREAM_OK;
 
