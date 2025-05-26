@@ -1,6 +1,6 @@
 /******************************************************************************
  * @file     vio_AppKit-E7.c
- * @brief    Virtual I/O implementation for Alif Semiconductor Ensemble AppKit-E7
+ * @brief    Virtual I/O implementation for Alif Semiconductor Ensemble AppKit-E7-AIML
  * @version  V1.0.0
  * @date     11. April 2025
  ******************************************************************************/

@@ -1,6 +1,6 @@
 # Alif Ensemble AppKit Board Layer with Examples
 
-This is the development repository for the Ensemble AppKit-E7 Board Support Pack (BSP).
+This is the development repository for the Ensemble AppKit-E7-AIML Board Support Pack (BSP).
 
 It contains board layer and standalone examples and it can be added as local repository to enable layer discovery.
 
@@ -26,7 +26,7 @@ The device is configured for this board using [Alif Conductor](https://conductor
 
 This repository can be used in a local directory and [mapped as software pack](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/build-tools.md#install-a-repository) using for example `cpackget` with:
 
-    cpackget add <path>/Keil.Ensemble_AppKit-E7_BSP.pdsc
+    cpackget add <path>/Keil.Ensemble_AppKit-E7-AIML_BSP.pdsc
 
 ## License
 

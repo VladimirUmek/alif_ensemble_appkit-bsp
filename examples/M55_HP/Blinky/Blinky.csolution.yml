@@ -11,12 +11,12 @@ solution:
     - pack: ARM::CMSIS@^6.1.0
     - pack: ARM::CMSIS-RTX@^5.9.0
     - pack: ARM::CMSIS-Compiler@^2.1.0
-    - pack: Keil::Ensemble_AppKit-E7_BSP@^1.0.0-0
+    - pack: Keil::Ensemble_AppKit-E7-AIML_BSP@^1.0.0-0
 
   # List different hardware targets that are used to deploy the solution.
   target-types:
     - type: AppKit-E7
-      board: Alif Semiconductor::AppKit-E7
+      board: Alif Semiconductor::AppKit-E7-AIML
       device: Alif Semiconductor::AE722F80F55D5LS:M55_HP
 
   # List of different build configurations.

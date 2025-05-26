@@ -1,13 +1,13 @@
 layer:
   type: Board
-  description: AppKit-E7 board setup using M55_HE
-  for-board: Alif Semiconductor::AppKit-E7
+  description: AppKit-E7-AIML board setup using M55_HE
+  for-board: Alif Semiconductor::AppKit-E7-AIML
   for-device: Alif Semiconductor::AE722F80F55D5LS:M55_HE
   processor:
     trustzone: secure
 
   connections:
-    - connect: AppKit-E7 Board
+    - connect: AppKit-E7-AIML Board
       provides:
         - AVH_AUDIO
         - AVH_VIDEO
@@ -19,7 +19,7 @@ layer:
         - Heap: 65536
 
   define:
-    - CMSIS_target_header: \"AppKit-E7.h\"
+    - CMSIS_target_header: \"AppKit-E7-AIML.h\"
     - ETHOSU55
     - NPU_QCONFIG: 1
     - NPU_REGIONCFG_0: 1
@@ -36,7 +36,7 @@ layer:
     - pack: ARM::CMSIS-Compiler@^2.1.0
     - pack: ARM::CMSIS-Driver@^2.8.0
     - pack: ARM::ethos-u-core-driver@^1.24.8
-    - pack: Keil::Ensemble_AppKit-E7_BSP@^1.0.0-0
+    - pack: Keil::Ensemble_AppKit-E7-AIML_BSP@^1.0.0-0
 
   add-path:
     - ./ConductorTool
@@ -80,7 +80,7 @@ layer:
     - component: CMSIS:CORE
 
     # VIO clashes with Alif GPIO driver hence using defines below
-    - component: CMSIS Driver:VIO:Board&AppKit-E7
+    - component: CMSIS Driver:VIO:Board&AppKit-E7-AIML
       define:
         - CMSIS_VIN: 1
         - CMSIS_VOUT: 1
@@ -97,7 +97,7 @@ layer:
       files:
         - file: ./main.c
         - file: ./main.h
-        - file: ./AppKit-E7.h
+        - file: ./AppKit-E7-AIML.h
         - file: ./retarget_stdio.c
 
     - group: Ethos Interface

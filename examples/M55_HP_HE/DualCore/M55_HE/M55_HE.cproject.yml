@@ -14,7 +14,7 @@ project:
     - component: CMSIS:RTOS2:Keil RTX5&Source
 
     - component: CMSIS Driver:GPIO
-    - component: CMSIS Driver:VIO:Board&AppKit-E7
+    - component: CMSIS Driver:VIO:Board&AppKit-E7-AIML
 
   add-path:
     - ./ConductorTool

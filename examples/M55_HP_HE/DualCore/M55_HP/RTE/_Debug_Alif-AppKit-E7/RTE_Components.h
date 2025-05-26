@@ -35,9 +35,9 @@
 #define RTE_Drivers_USART7   1           /* Driver UART7 */
 /* AlifSemiconductor::Device:SOC Peripherals:PINCONF@1.3.0 */
 #define RTE_Drivers_LL_PINCONF   1           /* Driver PinPAD and PinMux */
-/* Keil::CMSIS Driver:VIO:Board&AppKit-E7@1.0.0 */
+/* Keil::CMSIS Driver:VIO:Board&AppKit-E7-AIML@1.0.0 */
 #define RTE_VIO_BOARD
-#define RTE_VIO_APPKIT_E7
+#define RTE_VIO_APPKIT_E7_AIML
 
 
 #endif /* RTE_COMPONENTS_H */
