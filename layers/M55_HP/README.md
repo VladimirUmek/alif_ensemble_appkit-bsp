@@ -18,26 +18,21 @@ Refer to ["Alif Conductor Tool Manual"](https://conductor.alifsemi.com/Alif_HTML
 
 **STDIO** is routed to Virtual COM port via **UART4** peripheral
 
-### Virtual Streaming Interfaces
-
-| Interface | Peripheral | Board connector/component | Connection
-|:----------|:-----------|:--------------------------|:-----------
-| Audio     | SAI3       | I2S Microphone (U13, U15) | AVH_AUDIO
-| Video     | MIPI DCI   | MIPI Camera (J10, J12)    | AVH_VIDEO
-
 ### CMSIS-Driver mapping
 
-| CMSIS-Driver        | Peripheral | Board connector/component  | Connection
-|:--------------------|:-----------|:---------------------------|:---------------------
-| Driver_USART4       | UART4      | PRG USB connector (J3)     | STDIN, STDOUT, STDERR
-| CMSIS-Driver VIO    | GPIO       | Buttons, RGB LED, Joystick | CMSIS_VIO
+| CMSIS-Driver           | Peripheral | Board connector/component  | Connection
+|:-----------------------|:-----------|:---------------------------|:---------------------
+| Driver_USART4          | UART4      | PRG USB connector (J3)     | STDIN, STDOUT, STDERR
+| CMSIS-Driver VIO       | GPIO       | Buttons, RGB LED, Joystick | CMSIS_VIO
+| Driver_vStreamAudioIn  | SAI3       | I2S Microphone (U13, U15) | CMSIS_VSTREAM_AUDIO_IN
+| Driver_vStreamVideoIN  | MIPI CSI   | MIPI Camera (J10, J12)    | CMSIS_VSTREAM_VIDEO_IN
+| Driver_vStreamVideoOut | MIPI DSI   | GLCD Display (J18)        | CMSIS_VSTREAM_VIDEO_OUT
 
 ### CMSIS-Driver Virtual I/O mapping
 
 | CMSIS-Driver VIO  | Board component
 |:------------------|:----------------------------
-|vioBUTTON0         | SW4 Button
-|vioBUTTON1         | SW5 Button
+|vioBUTTON0         | Joystick Select Button
 |vioJOYup           | Joystick Up
 |vioJOYdown         | Joystick Down
 |vioJOYleft         | Joystick Left
