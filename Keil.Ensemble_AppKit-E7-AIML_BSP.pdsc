@@ -3,7 +3,7 @@
   <name>Ensemble_AppKit-E7-AIML_BSP</name>
   <vendor>Keil</vendor>
   <description>Alif Semiconductor Ensemble AppKit-E7-AIML Board Support Pack</description>
-  <url>https://www.keil.com/pack/</url>
+  <url></url>
   <repository type="git">https://github.com/VladimirUmek/alif_ensemble_appkit-bsp.git</repository>
   <license>LICENSE</license>
   <licenseSets>
